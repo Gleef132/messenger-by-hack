@@ -22,7 +22,11 @@ app.options('*', (req, res) => {
 });
 
 
-app.use(cors());
+app.use(cors({
+  origin: true, // reflect (enable) the requested origin in the CORS response
+  credentials: true, // allow cookies to be sent with the request
+}));
+
 
 // app.use(cors(corsOptions));
 app.use(express.json())
