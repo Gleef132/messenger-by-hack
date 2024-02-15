@@ -5,23 +5,18 @@ const PORT = process.env.PORT || 5000
 const SOCKET_PORT = process.env.SOCKET_PORT || 8000
 const app = express()
 const router = require('./routers/router')
-// const cors = require('cors')
+const cors = require('cors')
 const ws = require('ws')
 const socketController = require('./controllers/socket-controller.js')
 const userController = require('./controllers/user-controller')
 const getId = require('./utils/get-id')
 const path = require('path')
 // const fileUpload = require('express-fileupload')
-const corsOptions = {
-  origin: 'https://messenger-by-hack.vercel.app',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-};
 
-const cors = require('./cors'); // Подключите ваш новый middleware CORS здесь
+const corsMiddleware = require('./cors'); // Подключите ваш новый middleware CORS здесь
 
-app.use(cors);
+app.use(cors());
+app.use(corsMiddleware)
 
 // app.use(cors(corsOptions));
 app.use(express.json())
