@@ -23,16 +23,26 @@ app.use(express.json())
 app.use('/api', router)
 app.use('/static', express.static(path.join(__dirname, 'static')))
 
-const start = async () => {
+// const start = async () => {
+//   try {
+//     await mongoose.connect(process.env.DATABASE_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+//     app.listen(PORT, () => console.log(`server working! ${PORT}`))
+//   } catch (e) {
+//     console.log(e)
+//   }
+// }
+
+// start()
+
+module.exports = async (req, res) => {
   try {
     await mongoose.connect(process.env.DATABASE_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    app.listen(PORT, () => console.log(`server working! ${PORT}`))
+    app(req, res)
   } catch (e) {
     console.log(e)
+    res.status(500).send('Ошибка сервера')
   }
 }
-
-start()
 
 // const wss = new ws.Server({
 //   port: SOCKET_PORT,
