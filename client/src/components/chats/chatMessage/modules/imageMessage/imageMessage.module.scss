@@ -1,0 +1,120 @@
+.image {
+  display: grid;
+  grid-template-columns: repeat(2, 180px);
+  grid-template-rows: repeat(2, 180px);
+  margin-left: auto;
+  border-radius: 20px;
+  overflow: hidden;
+  gap: 2px;
+
+  &.border__none{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  
+  &__content{
+    display: flex;
+    flex-direction: column;
+    // text-align: left;
+  }
+
+  // &__text{
+  //   width: 100%;
+  //   background: var(--message-bg);
+  //   padding: 5px;
+  // }
+
+  &__loader{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    background: rgba($color: #000000, $alpha: .8);
+    &::before{
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      background: rgba($color: #212121, $alpha: .6);
+      border-radius: 50%;
+    }
+    &::after{
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      animation: spin 1s linear infinite;
+      border: 2px solid white;
+      background: rgba($color: #000000, $alpha: .4);
+      border-top: none;
+      border-right: none;
+      border-radius: 50%;
+      z-index: 10;
+    }
+  }
+
+  &__img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    outline: 2px solid var(--main-color);
+    // background: var(--message-bg);
+
+    &.gif__bg{
+      background: black;
+    }
+    
+    &.png__bg{
+      background: white;
+    }
+
+    &:nth-child(1):last-child {
+      grid-row: span 2;
+      grid-column: span 2;
+    }
+
+
+    &:nth-child(3):last-child {
+      grid-column: span 2;
+    }
+  }
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    cursor: pointer;
+    z-index: 1;
+  }
+}
+
+.modal__image {
+  max-width: 80%;
+  max-height: 80%;
+  width: fit-content;
+  height: fit-content;
+  object-fit: contain;
+  z-index: 10;
+}
+
+@keyframes spin {
+  from{
+    transform: translate(-50%,-50%) rotate(0deg);
+  }
+  to{
+    transform: translate(-50%,-50%) rotate(360deg);
+  }
+}

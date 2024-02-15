@@ -1,0 +1,139 @@
+@import '@/styles/mixins';
+
+.message {
+  position: relative;
+  width: fit-content;
+  background: var(--message-bg);
+  padding: 10px 15px 10px 15px;
+  border-radius: 8px;
+  display: flex;
+  gap: 8px;
+  @include adaptiv-value('font-size', 18, 16, 0);
+  max-width: 65%;
+  word-break: break-all;
+  white-space: pre-wrap;
+
+  &.border__left {
+    border-bottom-left-radius: 0;
+  }
+
+  &.border__right {
+    border-bottom-right-radius: 0;
+  }
+
+  &.left {
+    margin-right: auto;
+    text-align: left;
+
+    .message__vector {
+      path {
+        fill: var(--message-vector);
+        stroke: var(--message-vector);
+      }
+    }
+  }
+
+  &.right {
+    margin-left: auto;
+    text-align: right;
+    background: var(--main-color);
+    .message__image__text{
+      background: var(--main-color);
+    }
+
+    div {
+      justify-content: flex-end;
+    }
+  }
+
+  &.padding {
+    padding: 0;
+    background: none;
+  }
+
+  &__image__content{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+  
+  &__image__text{
+    width: 100%;
+    background: var(--message-bg);
+    padding: 10px 15px 10px 15px;
+    border-radius: 8px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    display: flex;
+    justify-content: space-between !important;
+
+    &.border__right{
+      border-bottom-right-radius: 8px;
+    }
+  }
+
+  &__info {
+    display: flex;
+    margin-top: auto;
+    margin-bottom: -5px;
+    font-size: 12px;
+    color: var(--text-color-secondary);
+    word-break: keep-all;
+    width: 55px;
+
+    &.image{
+      position: absolute;
+      z-index: 10000;
+      width: 65px;
+      bottom: 10px;
+      right: 10px;
+      background: rgba($color: #000000, $alpha: .6);
+      color: #fff;
+      padding: 3px 5px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      svg{
+        width: 25px;
+        height: 20px;
+      }
+    }
+
+    svg {
+      margin-top: -2px;
+      width: 20px;
+      height: 15px;
+
+      path {
+        stroke: var(--message-check-fill);
+      }
+    }
+  }
+
+  &__vector {
+    position: absolute;
+    bottom: -3px;
+
+    path {
+      fill: var(--main-color);
+      stroke: var(--main-color);
+    }
+
+    &.left {
+      left: 2px;
+      transform: translate(-100%, 0) rotateY(180deg);
+    }
+
+    &.right {
+      right: 2px;
+      transform: translate(100%, 0);
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}

@@ -1,0 +1,94 @@
+// Variables
+html[data-theme="dark"] {
+  --body-color: #212121;
+  --side-bar-color: #222222;
+  --side-bar-setting-fill: #fff;
+  --list-bg: #212121;
+  --text-color-primary: rgb(255, 255, 255);
+  --text-color-secondary: #AAAAAA;
+  --main-color: rgb(123, 113, 198);
+  // --border-color: #EEE;
+  --search-bg: #262626;
+  --search-list-bg: #333;
+
+  --setting-bg: #212121;
+  --setting-svg-hover: #323232;
+  --setting-border-color: #424242;
+
+  --settings-svg: #AAAAAA;
+
+  --user-info-bg: #212121;
+  // --setting-svg-hover: #323232;
+  // --setting-border-color: #424242;
+
+  --chat-bg: #212121;
+  --chat-bg-main: #111;
+  --chat-bg-hover: #262626;
+  --chat-content-header-bg: #292929;
+  --chat-content-footer-bg: transparent;
+  --chat-input-bg: #212121;
+  --chat-emoji-fill: #fff;
+  --chat-emoji-bg: #212121;
+  --chat-emoji-bg-hover: #333;
+  --chat-send-bg: #212121;
+  --chat-send-bg-hover: #333;
+  --chat-options-bg: #212121;
+  --chat-option-hover: #111;
+  --message-bg: #212121;
+  --message-vector: #212121;
+  --message-check-fill: #fff;
+  --blue-color: #2D9CDB;
+  --message-icon-bg-default: #3993FB;
+  --message-icon-bg-default-my: rgb(123, 113, 198);
+  --message-icon-bg-red: #E53935;
+  --message-icon-bg-green: #4FAE4E;
+  --message-icon-bg-orange: #FB8C00;
+
+  --auth-bg: #212121;
+  --auth-form-bg: #000;
+  --auth-color: #fff;
+  --auth-input-bg: #111;
+  --auth-input-border-color: #333;
+  --auth-input-border-color-hover: #fff;
+  --auth-btn-border-color: #fff;
+  --auth-btn-hover-background: #fff;
+  --auth-btn-hover-color: #000;
+
+  --svg-main-color: rgb(123, 113, 198);
+  --svg-main-color-hover: rgb(141, 130, 223);
+  --svg-secondary-color: rgb(160, 160, 160);
+
+  --popup-close-color: rgb(160, 160, 160);
+  --popup-close-bg-hover: rgba(160, 160, 160, .1);
+  --popup-close-color-hover: #fff;
+}
+
+html[data-theme="light"] {
+  --body-color: #fff;
+  --side-bar-color: #F0F0F0;
+  --side-bar-setting-fill: #000;
+  --text-color-primary: rgba(0, 0, 0, 0.85);
+  --text-color-secondary: rgba(0, 0, 0, 0.45);
+  --main-color: #27AE60;
+  --border-color: #EEE;
+  --search-bg: #EEE;
+  --search-list-bg: #ccc;
+  --chat-bg: #FAFAFA;
+  --chat-bg-main: #F9F9F9;
+  --chat-bg-hover: #EEE;
+  --chat-input-bg: #EEE;
+  --chat-emoji-fill: #000;
+  --chat-emoji-bg: #EEE;
+  --chat-emoji-bg-hover: #F4F4F7;
+  --message-bg: #F4F4F7;
+  --blue-color: #2D9CDB;
+  --auth-bg: #fff;
+  --auth-form-bg: #000;
+  --auth-color: #fff;
+  --auth-input-bg: #111;
+  --auth-input-border-color: #333;
+  --auth-input-border-color-hover: #fff;
+  --auth-btn-border-color: #fff;
+  --auth-btn-hover-background: #fff;
+  --auth-btn-hover-color: #000;
+}

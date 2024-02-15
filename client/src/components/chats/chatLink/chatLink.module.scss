@@ -1,0 +1,172 @@
+@import '@/styles/mixins';
+
+.user {
+  width: 100%;
+  padding: 5px 20px;
+  transition: background .3s ease 0s;
+  cursor: pointer;
+  border-radius: 12px;
+
+  &.active {
+    background: var(--main-color);
+
+    .user__item {
+      p {
+        color: #fff;
+      }
+    }
+
+    .user__info {
+      path {
+        stroke: #fff;
+      }
+    }
+
+    &:hover {
+      background: var(--main-color);
+    }
+  }
+
+  &:hover {
+    background: var(--chat-bg-hover);
+  }
+
+  &__content {
+    display: grid;
+    width: 100%;
+    position: relative;
+    gap: 5px 10px;
+    grid-template-columns: 50px 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: 'avatar title' 'avatar text';
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+    grid-area: avatar;
+    width: 100%;
+
+    p {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    &:nth-child(2) {
+      flex: 1 1 auto;
+      grid-area: title;
+    }
+
+    &:nth-child(3) {
+      grid-area: text;
+      position: absolute;
+      justify-content: space-between;
+    }
+  }
+
+  &__avatar {
+    width: 50px;
+    height: 50px;
+    position: relative;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    div {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--main-color);
+      bottom: 8px;
+      right: -2px;
+      border: 1px solid #fff;
+    }
+  }
+
+  &__name {
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 5px;
+  }
+
+  &__typing {
+    @include adaptiv-value('font-size', 18, 14, 0);
+    color: var(--main-color);
+  }
+
+  &__date {
+    @include adaptiv-value('font-size', 16, 12, 0);
+    margin-top: 5px;
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+
+    span {
+      width: 100%;
+      height: 100%;
+      background: var(--main-color);
+      border-radius: 50%;
+      font-size: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+
+      path {
+        stroke: var(--main-color);
+      }
+    }
+  }
+
+  &__secondary {
+    padding: 10px 6px;
+    border-radius: 12px;
+    cursor: pointer;
+
+    img {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+    }
+
+    p {
+      font-size: 12px;
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    &:hover {
+      background: var(--chat-bg-hover);
+      transition: all .3s ease 0s;
+    }
+  }
+}

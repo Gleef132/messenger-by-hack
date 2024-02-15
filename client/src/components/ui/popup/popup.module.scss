@@ -1,0 +1,59 @@
+.popup {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: rgba($color: #000000, $alpha: .9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  z-index: -10;
+  transition: opacity .3s ease 0s;
+
+  &.active {
+    z-index: 10000;
+    opacity: 1;
+  }
+
+  &__close {
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all .3s ease 0s;
+
+    &:hover {
+      background: var(--popup-close-bg-hover);
+
+      &::before,
+      &::after {
+        background: var(--popup-close-color-hover);
+      }
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 2px;
+      background: var(--popup-close-color);
+    }
+
+    &::before {
+      transform: rotate(-45deg);
+    }
+
+    &::after {
+      transform: rotate(45deg);
+    }
+  }
+}

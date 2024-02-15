@@ -1,0 +1,39 @@
+@import 'null';
+@import 'mixins';
+@import 'variables';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+// global styles
+body {
+	color: var(--text-color-primary);
+	font-size: 24px;
+	// font-family: var(--inter);
+	font-family: 'Inter', sans-serif;
+	background: var(--body-color);
+	user-select: none;
+}
+
+._container {
+	max-width: $maxWidthContainer + px;
+	margin: 0px auto;
+	position: relative;
+}
+
+.title {
+	@include adaptiv-value('font-size', 36, 23, 0);
+	font-weight: 700;
+}
+
+.text {
+	@include adaptiv-value('font-size', 18, 14, 0);
+	color: var(--text-color-secondary);
+	font-weight: 400;
+}
+
+.modal__image {
+	max-width: 80%;
+	max-height: 80%;
+	width: fit-content;
+	height: fit-content;
+	object-fit: contain;
+	z-index: 10;
+}
