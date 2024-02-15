@@ -23,10 +23,9 @@ app.options('*', (req, res) => {
 
 
 app.use(cors({
-  origin: true, // reflect (enable) the requested origin in the CORS response
-  credentials: true, // allow cookies to be sent with the request
+  origin: 'https://messenger-by-hack.vercel.app',
+  credentials: true,
 }));
-
 
 // app.use(cors(corsOptions));
 app.use(express.json())
