@@ -13,10 +13,7 @@ const getId = require('./utils/get-id')
 const path = require('path')
 // const fileUpload = require('express-fileupload')
 
-const corsMiddleware = require('./cors'); // Подключите ваш новый middleware CORS здесь
-
 app.use(cors());
-app.use(corsMiddleware)
 
 // app.use(cors(corsOptions));
 app.use(express.json())
