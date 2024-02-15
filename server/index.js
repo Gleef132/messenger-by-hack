@@ -12,9 +12,14 @@ const userController = require('./controllers/user-controller')
 const getId = require('./utils/get-id')
 const path = require('path')
 // const fileUpload = require('express-fileupload')
+const corsOptions = {
+  origin: 'https://messenger-by-hack.vercel.app',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
 
-
-app.use(cors())
+app.use(cors(corsOptions));
 app.use(express.json())
 // app.use(express.static('static'))
 app.use('/api', router)
@@ -29,6 +34,8 @@ const start = async () => {
     console.log(e)
   }
 }
+
+start()
 
 const wss = new ws.Server({
   port: SOCKET_PORT,
@@ -149,5 +156,3 @@ wss.on('connection', function connection(ws) {
     }
   })
 })
-
-start()
