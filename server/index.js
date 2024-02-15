@@ -25,7 +25,8 @@ app.use('/static', express.static(path.join(__dirname, 'static')))
 
 const start = async () => {
   try {
-    await mongoose.connect(process.env.DATABASE_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    // await mongoose.connect(process.env.DATABASE_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    await mongoose.connect(process.env.DATABASE_URI)
     app.listen(PORT, () => console.log(`server working! ${PORT}`))
   } catch (e) {
     console.log(e)
