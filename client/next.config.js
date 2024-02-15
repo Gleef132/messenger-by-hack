@@ -11,11 +11,11 @@ const nextConfig = {
 
     return config;
   },
-  // images: {
-  //   domains: ['messenger-by-hack-server.vercel.app'],
-  //   loader: 'default',
-  //   path: 'https://messenger-by-hack-server.vercel.app/static/',
-  // },
+  images: {
+    domains: ['messenger-by-hack-server.vercel.app'],
+    loader: 'default',
+    path: 'https://messenger-by-hack-server.vercel.app/static/',
+  },
   async headers() {
     return [
       {
