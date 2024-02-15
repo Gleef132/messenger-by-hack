@@ -14,8 +14,8 @@ const path = require('path')
 // const fileUpload = require('express-fileupload')
 
 
-app.use(express.json())
 app.use(cors())
+app.use(express.json())
 // app.use(express.static('static'))
 app.use('/api', router)
 // app.use(fileUpload({}))
