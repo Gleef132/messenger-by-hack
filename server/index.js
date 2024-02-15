@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 5000
 const SOCKET_PORT = process.env.SOCKET_PORT || 8000
 const app = express()
 const router = require('./routers/router')
-const cors = require('cors')
+// const cors = require('cors')
 const ws = require('ws')
 const socketController = require('./controllers/socket-controller.js')
 const userController = require('./controllers/user-controller')
@@ -19,7 +19,11 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
-app.use(cors(corsOptions));
+const cors = require('./cors'); // Подключите ваш новый middleware CORS здесь
+
+app.use(cors);
+
+// app.use(cors(corsOptions));
 app.use(express.json())
 // app.use(express.static('static'))
 app.use('/api', router)
