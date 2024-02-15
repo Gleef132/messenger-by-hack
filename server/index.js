@@ -13,15 +13,6 @@ const getId = require('./utils/get-id')
 const path = require('path')
 // const fileUpload = require('express-fileupload')
 
-app.options('*', (req, res) => {
-  // Установите здесь необходимые заголовки CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.sendStatus(200);
-});
-
-
 app.use(cors({
   origin: 'https://messenger-by-hack.vercel.app',
   methods: 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
