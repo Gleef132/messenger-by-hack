@@ -12,7 +12,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ['localhost'],
+    domains: ['messenger-by-hack-server.vercel.app'],
     loader: 'default',
     path: 'https://messenger-by-hack-server.vercel.app/static/',
   },
