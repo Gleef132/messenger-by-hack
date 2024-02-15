@@ -15,12 +15,7 @@ const path = require('path')
 
 
 app.use(express.json())
-app.use(cors(
-  {
-    origin: [process.env.APP_URL],
-    credentials: true,
-  }
-))
+app.use(cors())
 // app.use(express.static('static'))
 app.use('/api', router)
 // app.use(fileUpload({}))
