@@ -23,27 +23,27 @@ app.use(express.json())
 app.use('/api', router)
 app.use('/static', express.static(path.join(__dirname, 'static')))
 
-const start = async () => {
-  try {
-    // await mongoose.connect(process.env.DATABASE_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    await mongoose.connect(process.env.DATABASE_URI)
-    app.listen(PORT, () => console.log(`server working! ${PORT}`))
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-start()
-
-// module.exports = async (req, res) => {
+// const start = async () => {
 //   try {
-//     await mongoose.connect('mongodb+srv://messenger:messenger123@cluster0.kp4om5g.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
-//     app(req, res)
+//     // await mongoose.connect(process.env.DATABASE_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+//     await mongoose.connect(process.env.DATABASE_URI)
+//     app.listen(PORT, () => console.log(`server working! ${PORT}`))
 //   } catch (e) {
 //     console.log(e)
-//     res.status(500).send('Ошибка сервера')
 //   }
 // }
+
+// start()
+
+module.exports = async (req, res) => {
+  try {
+    await mongoose.connect('mongodb+srv://messenger:messenger123@cluster0.kp4om5g.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+    app(req, res)
+  } catch (e) {
+    console.log(e)
+    res.status(500).send('Ошибка сервера')
+  }
+}
 
 // const wss = new ws.Server({
 //   port: SOCKET_PORT,
