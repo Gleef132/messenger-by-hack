@@ -12,38 +12,38 @@ const userController = require('./controllers/user-controller')
 const getId = require('./utils/get-id')
 const path = require('path')
 
+app.use(express.json())
+app.use(cors())
+app.use('/api', router)
+app.use('/static', express.static(path.join(__dirname, 'static')))
 // app.use(cors({
 //   origin: true,
 //   methods: 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
 //   allowedHeaders: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
 //   credentials: true,
 // }));
-app.use(express.json())
-app.use(cors())
-app.use('/api', router)
-app.use('/static', express.static(path.join(__dirname, 'static')))
 
-// const start = async () => {
-//   try {
-//     // await mongoose.connect(process.env.DATABASE_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-//     await mongoose.connect(process.env.DATABASE_URI)
-//     app.listen(PORT, () => console.log(`server working! ${PORT}`))
-//   } catch (e) {
-//     console.log(e)
-//   }
-// }
-
-// start()
-
-module.exports = async (req, res) => {
+const start = async () => {
   try {
-    await mongoose.connect('mongodb+srv://messenger:messenger123@cluster0.kp4om5g.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
-    app(req, res)
+    // await mongoose.connect(process.env.DATABASE_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    await mongoose.connect(process.env.DATABASE_URI)
+    app.listen(PORT, () => console.log(`server working! ${PORT}`))
   } catch (e) {
     console.log(e)
-    res.status(500).send('Ошибка сервера')
   }
 }
+
+start()
+
+// module.exports = async (req, res) => {
+//   try {
+//     await mongoose.connect('mongodb+srv://messenger:messenger123@cluster0.kp4om5g.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+//     app(req, res)
+//   } catch (e) {
+//     console.log(e)
+//     res.status(500).send('Ошибка сервера')
+//   }
+// }
 
 // const wss = new ws.Server({
 //   port: SOCKET_PORT,
