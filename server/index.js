@@ -12,8 +12,19 @@ const userController = require('./controllers/user-controller')
 const getId = require('./utils/get-id')
 const path = require('path')
 
+const corsOptions = {
+  origin: 'https://messenger-by-hack.vercel.app',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  credentials: true // enable set cookie
+}
+
+app.use(cors(corsOptions));
+
+
 app.use(express.json())
-app.use(cors())
+// app.use(cors())
 app.use('/api', router)
 app.use('/static', express.static(path.join(__dirname, 'static')))
 
