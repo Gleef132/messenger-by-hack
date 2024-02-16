@@ -24,7 +24,6 @@ const start = async () => {
     app.listen(PORT, () => console.log(`server working! ${PORT}`))
   } catch (e) {
     console.log(e)
-    res.status(500).send('Ошибка сервера')
   }
 }
 
