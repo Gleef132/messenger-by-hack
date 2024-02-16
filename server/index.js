@@ -18,8 +18,8 @@ const path = require('path')
 //   allowedHeaders: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
 //   credentials: true,
 // }));
-app.use(cors())
 app.use(express.json())
+app.use(cors())
 app.use('/api', router)
 app.use('/static', express.static(path.join(__dirname, 'static')))
 
