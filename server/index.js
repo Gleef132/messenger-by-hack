@@ -16,12 +16,6 @@ app.use(express.json())
 app.use(cors())
 app.use('/api', router)
 app.use('/static', express.static(path.join(__dirname, 'static')))
-// app.use(cors({
-//   origin: true,
-//   methods: 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
-//   allowedHeaders: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
-//   credentials: true,
-// }));
 
 const start = async () => {
   try {
@@ -30,6 +24,7 @@ const start = async () => {
     app.listen(PORT, () => console.log(`server working! ${PORT}`))
   } catch (e) {
     console.log(e)
+    res.status(500).send('Ошибка сервера')
   }
 }
 
