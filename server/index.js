@@ -1,8 +1,41 @@
+// require('dotenv').config()
+// const express = require('express')
+// const mongoose = require('mongoose')
+// const PORT = process.env.PORT || 5000
+// const SOCKET_PORT = process.env.SOCKET_PORT || 8000
+// const router = require('./routers/router')
+// const cors = require('cors')
+// const ws = require('ws')
+// const socketController = require('./controllers/socket-controller.js')
+// const userController = require('./controllers/user-controller')
+// const getId = require('./utils/get-id')
+// const path = require('path')
+// const app = express()
+
+// app.use(express.json())
+// app.use(cors());
+// app.use('/api', router)
+// app.use('/static', express.static(path.join(__dirname, 'static')))
+
+// const start = async () => {
+//   try {
+//     await mongoose.connect(process.env.DATABASE_URI)
+//     app.listen(PORT, () => console.log(`server working! ${PORT}`))
+//   } catch (e) {
+//     console.log(e)
+//   }
+// }
+
+// start()
+
+// const wss = new ws.Server({
+//   port: SOCKET_PORT,
+// }, () => console.log(`websocket server starting on ${SOCKET_PORT}!`))
 require('dotenv').config()
 const express = require('express')
+const http = require('http') // Добавьте эту строку
 const mongoose = require('mongoose')
 const PORT = process.env.PORT || 5000
-const SOCKET_PORT = process.env.SOCKET_PORT || 8000
 const router = require('./routers/router')
 const cors = require('cors')
 const ws = require('ws')
@@ -12,6 +45,7 @@ const getId = require('./utils/get-id')
 const path = require('path')
 
 const app = express()
+const server = http.createServer(app) // Создайте HTTP-сервер с Express-приложением
 
 app.use(express.json())
 app.use(cors());
@@ -21,7 +55,7 @@ app.use('/static', express.static(path.join(__dirname, 'static')))
 const start = async () => {
   try {
     await mongoose.connect(process.env.DATABASE_URI)
-    app.listen(PORT, () => console.log(`server working! ${PORT}`))
+    server.listen(PORT, () => console.log(`server working! ${PORT}`)) // Измените эту строку, чтобы использовать HTTP-сервер вместо Express-приложения
   } catch (e) {
     console.log(e)
   }
@@ -30,8 +64,9 @@ const start = async () => {
 start()
 
 const wss = new ws.Server({
-  port: SOCKET_PORT,
-}, () => console.log(`websocket server starting on ${SOCKET_PORT}!`))
+  server: server, // Измените эту строку, чтобы привязать WebSocket-сервер к HTTP-серверу
+}, () => console.log(`websocket server starting on ${PORT}!`)) // Измените эту строку, чтобы использовать тот же порт, что и для HTTP
+
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function (message) {
