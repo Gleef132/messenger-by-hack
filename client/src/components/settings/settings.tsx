@@ -9,6 +9,7 @@ import { languageSlice } from '@/store/reducers/LanguageSlice';
 import { getLanguage } from '@/utils/getLanguage';
 import { ILanguageData } from '@/models/ILanguage';
 import { useTheme } from '@/hooks/useTheme';
+import Avatar from '../ui/avatar/avatar';
 
 interface ISettingsProps {
   closeSettings: () => void;
@@ -53,10 +54,7 @@ const Settings: FC<ISettingsProps> = ({ closeSettings, isActive }) => {
       </div>
       <div className={cl.settings__content}>
         <div className={cl.settings__avatar}>
-          {isImage ?
-            <img src={path} alt="avatar" /> :
-            <div className={cl.settings__avatar__gradient} style={{ background: `linear-gradient(${gradient})` }}>{username}</div>
-          }
+          <Avatar styles={cl.settings__avatar__gradient} />
           <div className={cl.settings__avatar__text}>
             <h3>{username}</h3>
             <p className='text'>{languageData?.userState.online}</p>

@@ -16,6 +16,7 @@ import { useSocket } from '@/api/use-socket'
 import { popupSlice } from '@/store/reducers/PopupSlice'
 import ChatPopupContent from '../chatPopupContent/chatPopupContent'
 import VideoCall from '@/components/videoCall/videoCall'
+import Avatar from '@/components/ui/avatar/avatar'
 
 type SendMessage = {
   event: 'key'
@@ -259,7 +260,8 @@ const ChatContent: FC = () => {
           <div className={cl.chat__header__content}>
             <div className={cl.chat__header__item}>
               <div className={cl.chat__avatar}>
-                <img src={path} alt="avatar" />
+                {/* <img src={path} alt="avatar" /> */}
+                <Avatar pathProps={path} nameProps={name} styles={cl.chat__avatar__gradient} />
               </div>
               <div className={cl.chat__header__name}>
                 {name}

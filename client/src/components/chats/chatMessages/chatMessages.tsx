@@ -51,7 +51,7 @@ const ChatMessages: FC<IChatMessagesProps> = ({ messages, footerHeight, scrollHa
             time={item.date.time}
             isMyMessage={item.from === username}
             isRead={item.isRead}
-            vectorCondition={messages[i + 1]?.from !== item.from}
+            vectorCondition={messages[i + 1]?.from !== item.from && !!item.message}
             files={item.files}
           />
         )}

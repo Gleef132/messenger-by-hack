@@ -9,6 +9,7 @@ import { IUser } from '@/models/IUser'
 import { getMessages } from '@/utils/getMessages'
 import { ISocketMessage, ISocketResponse } from '@/models/ISocket'
 import { IMessage } from '@/models/IMessage'
+import Avatar from '@/components/ui/avatar/avatar'
 
 interface IChatLinkProps {
   user: IUser;
@@ -126,8 +127,9 @@ const ChatLink: FC<IChatLinkProps> = ({ user, active, changeActiveUser, variant 
       <div className={cl.user__content}>
         <div className={cl.user__item}>
           <div className={cl.user__avatar}>
-            <img src={userState?.path} alt="avatar" />
-            {userState?.isOnline && variant === 'default' && <div></div>}
+            {/* <img src={userState?.path} alt="avatar" /> */}
+            <Avatar pathProps={user.path} nameProps={user.name} styles={cl.user__avatar__gradient} />
+            {userState?.isOnline && variant === 'default' && <div className={cl.user__avatar__online}></div>}
           </div>
         </div>
         <div className={cl.user__item}>
@@ -160,7 +162,8 @@ const ChatLink: FC<IChatLinkProps> = ({ user, active, changeActiveUser, variant 
     </div> :
       <div className={cl.user__secondary} onClick={clickHandle} >
         <div className={cl.user__secondary__content}>
-          <img src={user.path} alt="avatar" />
+          {/* <img src={user.path} alt="avatar" /> */}
+          <Avatar pathProps={user.path} nameProps={user.name} styles={cl.user__avatar__gradient} />
           <p>{user.name.split(' ')[0]}</p>
         </div>
       </div>

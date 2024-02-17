@@ -27,6 +27,11 @@ export const userSlice = createSlice({
     changeName(state, { payload }: PayloadAction<string>) {
       state.name = payload
     },
+    changeUserData(state,{payload}: PayloadAction<Omit<IState,'isUserInfoActive'>>){
+      state.path = payload.path
+      state.username = payload.username
+      state.name = payload.name
+    },
     changeUserInfoActive(state, { payload }: PayloadAction<boolean>) {
       state.isUserInfoActive = payload
     }

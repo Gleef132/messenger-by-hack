@@ -8,6 +8,7 @@ import cl from './aside.module.scss'
 import { IUser } from '@/models/IUser'
 import Link from 'next/link'
 import { settingSlice } from '@/store/reducers/SettingSlice'
+import Avatar from '../ui/avatar/avatar'
 
 interface IAsideProps {
   user: IUser;
@@ -33,10 +34,11 @@ const Aside: FC<IAsideProps> = ({ user }) => {
             <LogoSvg />
           </div>
           <div className={cl.sidebar__avatar}>
-            {isImage ?
+            {/* {isImage ?
               <img src={user.path} alt="Avatar" /> :
               <div className={cl.sidebar__avatar__gradient} style={{ background: `linear-gradient(${gradient})` }}>{user.name}</div>
-            }
+            } */}
+            <Avatar pathProps={user.path} nameProps={user.name} styles={cl.sidebar__avatar__gradient} />
           </div>
         </div>
         <Navigation />

@@ -42,8 +42,7 @@ const HomePage: FC<IHomePage> = ({ language, user, chatUsers }) => {
 
   useEffect(() => {
     dispatch(changeLanguage(language))
-    // socket.current = new WebSocket(`${process.env.NEXT_PUBLIC_SOCKET_API}`)
-    socket.current = new WebSocket('wss://messenger-by-hack.onrender.com')
+    socket.current = new WebSocket(`${process.env.NEXT_PUBLIC_SOCKET_API}`)
     dispatch(setSocket({ socket: socket.current, isConnected: false }))
 
     waitForConnection(socket.current, () => {

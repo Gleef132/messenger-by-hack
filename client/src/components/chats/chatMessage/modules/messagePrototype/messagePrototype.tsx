@@ -9,12 +9,13 @@ const MessagePrototype: FC<PropsWithChildren<IChatMessageProps>> = ({ isMyMessag
   const mainLeftStyles = vectorCondition ? `${cl.message} ${cl.left} ${cl.border__left}` : `${cl.message} ${cl.left}`
 
   const messageClasses = isMyMessage ? mainRightStyles : mainLeftStyles;
+  const messageTextStyles = isMyMessage ? cl.border__left : cl.border__right
 
   const messageInfo = (
     <>
       <div className={type === 'image' && !message ? `${cl.message__info} ${cl.image}` : cl.message__info}>
         {time}
-        {isRead ? <CheckReadSvg /> : <CheckSendSvg />}
+        {isMyMessage ? isRead ? <CheckReadSvg /> : <CheckSendSvg /> : null}
       </div>
       {vectorCondition && (
         <div className={`${cl.message__vector} ${isMyMessage ? cl.right : cl.left}`}>
@@ -36,7 +37,9 @@ const MessagePrototype: FC<PropsWithChildren<IChatMessageProps>> = ({ isMyMessag
         <div className={cl.message__image__content}>
           {/* {messageContent} */}
           {children}
-          <div className={!vectorCondition ? `${cl.message__image__text} ${cl.border__right}` : cl.message__image__text}>{message}{messageInfo}</div>
+          <div className={
+            vectorCondition ? `${cl.message__image__text} ${messageTextStyles}` : cl.message__image__text
+          }>{message}{messageInfo}</div>
         </div>
       ) : (
         messageContent

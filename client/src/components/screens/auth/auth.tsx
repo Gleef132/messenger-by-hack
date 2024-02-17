@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import axios from 'axios'
 
 import Loader from '@/components/ui/loader/loader'
-import { useAppSelector } from '@/hooks/redux'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { IResponse } from '@/models/IResponse'
 import { getCookie } from '@/utils/getCookie'
 import cl from './auth.module.scss'
@@ -13,6 +13,7 @@ import { useRedirect } from '@/hooks/useRedirect'
 import { ILanguageData } from '@/models/ILanguage'
 import { useTheme } from '@/hooks/useTheme'
 import { createAvatarGradient } from '@/utils/createAvatarGradient'
+import { userSlice } from '@/store/reducers/UserSlice'
 interface IAuth {
   language: ILanguageData;
 }
@@ -24,6 +25,8 @@ const Auth: FC<IAuth> = ({ language }) => {
   const [validateText, setValidateText] = useState<string>('')
   const [isLoding, setIsLoading] = useState<boolean>(false)
 
+  const dispatch = useAppDispatch()
+  const { changeUserData } = userSlice.actions
   const { languageData } = useAppSelector(state => state.languageSlice)
   // const { auth: authLanguageData } = languageData
 
@@ -44,9 +47,16 @@ const Auth: FC<IAuth> = ({ language }) => {
       .then(res => {
         router.push('/')
         document.cookie = `token=${res.data.token}`
+        const { user } = res.data
         localStorage.setItem('token', JSON.stringify(res.data.token))
-        localStorage.setItem('path', JSON.stringify(res.data.user?.path))
-        localStorage.setItem('username', JSON.stringify(res.data.user?.username))
+        localStorage.setItem('path', JSON.stringify(user?.path))
+        localStorage.setItem('username', JSON.stringify(user?.username))
+        localStorage.setItem('name', JSON.stringify(user?.name))
+        dispatch(changeUserData({
+          path: user?.path || '',
+          username: user?.username || '',
+          name: user?.name || ''
+        }))
       })
       .catch(e => setValidateText(e.response.data.message))
       .finally(() => setIsLoading(false))
@@ -66,9 +76,16 @@ const Auth: FC<IAuth> = ({ language }) => {
       .then(res => {
         router.push('/')
         document.cookie = `token=${res.data.token}`
+        const { user } = res.data
         localStorage.setItem('token', JSON.stringify(res.data.token))
-        localStorage.setItem('path', JSON.stringify(res.data.user?.path))
-        localStorage.setItem('username', JSON.stringify(res.data.user?.username))
+        localStorage.setItem('path', JSON.stringify(user?.path))
+        localStorage.setItem('username', JSON.stringify(user?.username))
+        localStorage.setItem('name', JSON.stringify(user?.name))
+        dispatch(changeUserData({
+          path: user?.path || '',
+          username: user?.username || '',
+          name: user?.name || ''
+        }))
       })
       .catch(e => setValidateText(e.response.data.message))
       .finally(() => setIsLoading(false))

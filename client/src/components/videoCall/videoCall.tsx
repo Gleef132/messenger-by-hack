@@ -1,12 +1,13 @@
 'use client'
 
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { useAppSelector } from '@/hooks/redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import { ISocketAnswer, ISocketCandidate, ISocketLeave, ISocketOffer, ISocketResponse } from '@/models/ISocket';
 import { useSocket } from '@/api/use-socket';
 import cl from './videoCall.module.scss';
 import { CallSvg, MicroOffSvg, MicroOnSvg, VideoOffSvg, VideoOnSvg } from '../svgs';
 import { getInitials } from '@/utils/getInitials';
+import { popupSlice } from '@/store/reducers/PopupSlice';
 
 interface IVideoCallProps {
   offer?: RTCSessionDescription;
@@ -18,6 +19,8 @@ interface IVideoCallProps {
 
 const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) => {
 
+  const dispatch = useAppDispatch()
+  const { hiddenPopup } = popupSlice.actions
   const [isCalling, setIsCalling] = useState<boolean>(true);
   const [microActive, setMicroActive] = useState<boolean>(true)
   const [videoActive, setVideoActive] = useState<boolean>(false)
@@ -27,7 +30,7 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
     offerEvent: (message) => handleOffer(message.offer as RTCSessionDescriptionInit, message.clientId),
     answerEvent: (message) => handleAnswer(message.answer as RTCSessionDescriptionInit),
     candidateEvent: (message) => handleCandidate(message.candidate as RTCIceCandidateInit),
-    leaveEvent: () => endCall()
+    leaveEvent: () => dispatch(hiddenPopup())
   });
 
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
@@ -73,6 +76,11 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
               setIsCalling(false);
             }
           };
+          peerConnection.current.oniceconnectionstatechange = () => {
+            if (peerConnection.current.iceConnectionState === 'disconnected') {
+              dispatch(hiddenPopup())
+            }
+          }
           // if (offer) {
           //   peerConnection.current.setRemoteDescription(new RTCSessionDescription(offer));
           //   return console.log('set remote');
@@ -265,11 +273,14 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
   const endCall = () => {
     // Завершить звонок
     const message: ISocketLeave = {
-      clientId: _id,
       event: 'leave',
-      token
+      clientId: clientId ? clientId : _id,
+      token,
     };
     socket.sendMessage(message);
+    dispatch(hiddenPopup())
+    peerConnection.current.close()
+    console.log(_id, clientId)
   };
 
   const toggleMicrophone = () => {
@@ -304,7 +315,14 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
         )}
         <div className={cl.video__btns}>
           <button className={cl.video__btn} onClick={toggleMicrophone}>{microActive ? <MicroOnSvg /> : <MicroOffSvg />}</button>
-          <button className={offer ? `${cl.video__btn} ${cl.green}` : `${cl.video__btn} ${cl.red}`} onClick={() => offer ? answerCall() : endCall()}><CallSvg /></button>
+          {offer && isCalling ?
+            <>
+              <button className={`${cl.video__btn} ${cl.red}`} onClick={endCall}><CallSvg /></button>
+              <button className={`${cl.video__btn} ${cl.green}`} onClick={answerCall}><CallSvg /></button>
+            </> :
+            <button className={`${cl.video__btn} ${cl.red}`} onClick={endCall}><CallSvg /></button>
+          }
+          {/* <button className={offer ? `${cl.video__btn} ${cl.green}` : `${cl.video__btn} ${cl.red}`} onClick={() => offer ? answerCall() : endCall()}><CallSvg /></button> */}
           <button className={cl.video__btn} disabled={!localStream?.getVideoTracks().length} onClick={toggleVideo}>{videoActive ? <VideoOnSvg /> : <VideoOffSvg />}</button>
         </div>
       </div>

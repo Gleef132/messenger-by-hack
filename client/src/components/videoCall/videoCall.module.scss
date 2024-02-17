@@ -86,6 +86,21 @@
     }
 
     .video__btn:nth-child(3){
+      svg{
+        width: 30px;
+        height: 30px;
+        stroke: #fff;
+      }
+    }
+    .video__btn:nth-child(3):last-child{
+      width: 45px;
+      height: 45px;
+      svg{
+        width: 25px;
+        height: 25px;
+      }
+    }
+    .video__btn:nth-child(4){
       width: 45px;
       height: 45px;
       svg{
