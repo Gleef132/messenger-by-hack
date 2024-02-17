@@ -101,7 +101,8 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
                 }
               };
               socket.sendMessage(message);
-            });
+            })
+            .catch(e => console.log('useEffect createOffer', e))
         })
         .catch(() => {
           if (videoEnabled) {
@@ -180,7 +181,8 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
   };
 
   const handleOffer = (offer: RTCSessionDescriptionInit, clientId: string) => {
-    peerConnection.current.setRemoteDescription(new RTCSessionDescription(offer));
+    peerConnection.current.setRemoteDescription(new RTCSessionDescription(offer))
+      .catch(e => console.log('handleOffer Error setRemoteDescription', e))
     peerConnection.current.createAnswer()
       .then(answer => {
         peerConnection.current.setLocalDescription(answer);
@@ -192,6 +194,7 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
         };
         socket.sendMessage(message);
       })
+      .catch(e => console.log('handleOffer Error createAnswer', e))
     // .then(() => {
     //   // Отправить все собранные ICE-кандидаты после отправки ответа
     //   candidatesQueue.forEach(candidate => {
@@ -226,7 +229,8 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
         // })
         // });
         // candidatesQueue = [];
-      });
+      })
+      .catch(e => console.log('handleAnswer ERROR', e))
   };
 
   // const handleCandidate = (candidate: RTCIceCandidateInit) => {
