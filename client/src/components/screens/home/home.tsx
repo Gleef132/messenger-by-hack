@@ -49,7 +49,7 @@ const HomePage: FC<IHomePage> = ({ language, user, chatUsers }) => {
       dispatch(setSocket({ socket: socket.current, isConnected: true }))
       const message: ISocketConnection = {
         event: 'connection',
-        token: `Bearar ${JSON.parse(localStorage.getItem('token') as string)}`
+        token: `Bearer ${JSON.parse(localStorage.getItem('token') as string)}`
       }
       socket.current?.send(JSON.stringify(message))
     }, 100)
