@@ -6,8 +6,7 @@ import { chatSlice } from '@/store/reducers/ChatSlice'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { numberUnreadMessages } from '@/utils/number-unread-messages'
 import { IUser } from '@/models/IUser'
-import { getMessages } from '@/utils/getMessages'
-import { ISocketMessage, ISocketResponse } from '@/models/ISocket'
+import { ISocketResponse } from '@/models/ISocket'
 import { IMessage } from '@/models/IMessage'
 import Avatar from '@/components/ui/avatar/avatar'
 import { useSocket } from '@/api/use-socket'
@@ -52,13 +51,13 @@ const ChatLink: FC<IChatLinkProps> = ({ user, variant, username }) => {
     dispatch(userMessages(messagesState))
     dispatch(userChatActive(true))
     dispatch(userSetLastMessage({ setLastMessage }))
-    // changeActiveUser(userState._id)
     if (lastMessage?.from !== username) {
       setIsRead(true)
     }
   }
 
   const acceptMessage = ({ clientId, date, from, isSend, isRead, message, type }: ISocketResponse) => {
+    if (userState._id !== clientId) return;
     const newMessage: IMessage = {
       _id: '' + clientId + Date.now() + date + Math.random(),
       date,
@@ -71,11 +70,6 @@ const ChatLink: FC<IChatLinkProps> = ({ user, variant, username }) => {
     setMessagesState(prev => [...prev, newMessage])
     setLastMessage({ ...newMessage })
     setAmountUnreadMessasges(prev => prev + 1)
-    // if (isChatActive) {
-    //   setIsRead(true)
-    // } else {
-    //   setIsRead(false)
-    // }
 
     if (userState.username === chatUserNameRef.current) {
       setIsRead(true)
@@ -119,7 +113,6 @@ const ChatLink: FC<IChatLinkProps> = ({ user, variant, username }) => {
       <div className={cl.user__content}>
         <div className={cl.user__item}>
           <div className={cl.user__avatar}>
-            {/* <img src={userState?.path} alt="avatar" /> */}
             <Avatar pathProps={user.path} nameProps={user.name} styles={cl.user__avatar__gradient} />
             {userState?.isOnline && variant === 'default' && <div className={cl.user__avatar__online}></div>}
           </div>

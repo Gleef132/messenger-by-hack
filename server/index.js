@@ -1,39 +1,6 @@
-// require('dotenv').config()
-// const express = require('express')
-// const mongoose = require('mongoose')
-// const PORT = process.env.PORT || 5000
-// const SOCKET_PORT = process.env.SOCKET_PORT || 8000
-// const router = require('./routers/router')
-// const cors = require('cors')
-// const ws = require('ws')
-// const socketController = require('./controllers/socket-controller.js')
-// const userController = require('./controllers/user-controller')
-// const getId = require('./utils/get-id')
-// const path = require('path')
-// const app = express()
-
-// app.use(express.json())
-// app.use(cors());
-// app.use('/api', router)
-// app.use('/static', express.static(path.join(__dirname, 'static')))
-
-// const start = async () => {
-//   try {
-//     await mongoose.connect(process.env.DATABASE_URI)
-//     app.listen(PORT, () => console.log(`server working! ${PORT}`))
-//   } catch (e) {
-//     console.log(e)
-//   }
-// }
-
-// start()
-
-// const wss = new ws.Server({
-//   port: SOCKET_PORT,
-// }, () => console.log(`websocket server starting on ${SOCKET_PORT}!`))
 require('dotenv').config()
 const express = require('express')
-const http = require('http') // Добавьте эту строку
+const http = require('http')
 const mongoose = require('mongoose')
 const PORT = process.env.PORT || 5000
 const router = require('./routers/router')
@@ -45,7 +12,7 @@ const getId = require('./utils/get-id')
 const path = require('path')
 
 const app = express()
-const server = http.createServer(app) // Создайте HTTP-сервер с Express-приложением
+const server = http.createServer(app)
 
 app.use(express.json())
 app.use(cors());
@@ -55,7 +22,7 @@ app.use('/static', express.static(path.join(__dirname, 'static')))
 const start = async () => {
   try {
     await mongoose.connect(process.env.DATABASE_URI)
-    server.listen(PORT, () => console.log(`server working! ${PORT}`)) // Измените эту строку, чтобы использовать HTTP-сервер вместо Express-приложения
+    server.listen(PORT, () => console.log(`server working! ${PORT}`))
   } catch (e) {
     console.log(e)
   }
@@ -64,8 +31,8 @@ const start = async () => {
 start()
 
 const wss = new ws.Server({
-  server: server, // Измените эту строку, чтобы привязать WebSocket-сервер к HTTP-серверу
-}, () => console.log(`websocket server starting on ${PORT}!`)) // Измените эту строку, чтобы использовать тот же порт, что и для HTTP
+  server: server,
+}, () => console.log(`websocket server starting on ${PORT}!`))
 
 
 wss.on('connection', function connection(ws) {
@@ -74,14 +41,17 @@ wss.on('connection', function connection(ws) {
     console.log(parseMessage.event)
     switch (parseMessage.event) {
       case 'message':
-        socketController.message(parseMessage)
-        if (parseMessage.clientIsOnline && parseMessage.from) {
-          wss.clients.forEach(client => {
-            if (client._id === parseMessage.clientId) {
-              client.send(JSON.stringify(parseMessage))
+        getId(parseMessage.token)
+          .then(res => {
+            socketController.message(parseMessage)
+            if (parseMessage.clientIsOnline && parseMessage.from) {
+              wss.clients.forEach(client => {
+                if (client._id === parseMessage.clientId) {
+                  client.send(JSON.stringify({ ...parseMessage, clientId: res }))
+                }
+              })
             }
           })
-        }
         break
       case 'connection':
         getId(parseMessage.token)
@@ -126,9 +96,7 @@ wss.on('connection', function connection(ws) {
             })
           })
         break
-      // Add WebRTC events
       case 'offer':
-        // Forward the offer to the other peer
         getId(parseMessage.token)
           .then(res => {
             wss.clients.forEach(client => {
@@ -144,7 +112,6 @@ wss.on('connection', function connection(ws) {
           })
         break;
       case 'answer':
-        // Forward the answer to the other peer
         wss.clients.forEach(client => {
           if (client._id === parseMessage.clientId) {
             client.send(JSON.stringify({
@@ -155,7 +122,6 @@ wss.on('connection', function connection(ws) {
         });
         break;
       case 'candidate':
-        // Forward the ICE Candidate to the other peer
         wss.clients.forEach(client => {
           if (client._id === parseMessage.clientId) {
             client.send(JSON.stringify({
@@ -166,7 +132,6 @@ wss.on('connection', function connection(ws) {
         });
         break;
       case 'leave':
-        // Notify the other user so they can close their connection
         wss.clients.forEach(client => {
           if (client._id === parseMessage.clientId) {
             client.send(JSON.stringify({
@@ -175,8 +140,8 @@ wss.on('connection', function connection(ws) {
           }
         });
         break;
-      }
-    }) 
+    }
+  })
   ws.on('close', () => {
     if (ws._id) {
       userController.userOnline(ws._id, false)
