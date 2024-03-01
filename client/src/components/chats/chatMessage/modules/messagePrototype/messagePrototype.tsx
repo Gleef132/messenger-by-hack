@@ -9,7 +9,6 @@ const MessagePrototype: FC<PropsWithChildren<IChatMessageProps>> = ({ isMyMessag
   const mainLeftStyles = vectorCondition ? `${cl.message} ${cl.left} ${cl.border__left}` : `${cl.message} ${cl.left}`
 
   const messageClasses = isMyMessage ? mainRightStyles : mainLeftStyles;
-  const messageTextStyles = isMyMessage ? cl.border__left : cl.border__right
 
   const messageInfo = (
     <>
@@ -38,7 +37,8 @@ const MessagePrototype: FC<PropsWithChildren<IChatMessageProps>> = ({ isMyMessag
           {/* {messageContent} */}
           {children}
           <div className={
-            vectorCondition ? `${cl.message__image__text} ${messageTextStyles}` : cl.message__image__text
+            vectorCondition ? `${cl.message__image__text} ${cl.border}` :
+              `${cl.message__image__text}`
           }>{message}{messageInfo}</div>
         </div>
       ) : (

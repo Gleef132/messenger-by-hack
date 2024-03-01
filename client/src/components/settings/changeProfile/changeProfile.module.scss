@@ -1,0 +1,117 @@
+.profile{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+  height: 100%;
+
+  &__loader{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+  }
+  &__avatar{
+    position: relative;
+    margin-top: 40px;
+    cursor: pointer;
+    &:hover{
+      .profile__avatar__svg{
+        svg{
+          transform: scale(1.2);
+        }
+      }
+    }
+    img{
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    &__gradient{
+      width: 120px;
+      height: 120px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+    }
+
+    &__svg{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba($color: #000000, $alpha: .3);
+      svg{
+        transition: all .3s ease 0s;
+        width: 55px;
+        height: 55px;
+        stroke: #fff;
+      }
+    }
+  }
+  &__item{
+    display: flex;
+    flex-direction: column;
+    // gap: 30px;
+    width: 70%;
+    input{
+      position: relative;
+      background: transparent;
+      padding: 15px;
+      border: 2px solid var(--setting-input-border);
+      border-radius: 12px;
+      color: var(--text-color-primary);
+      font-size: 16px;
+      &:nth-child(1){
+        margin-bottom: 30px;
+      }
+      &:hover{
+        border-color: var(--setting-input-border-hover);
+      }
+      &:focus{
+        border-color: var(--main-color);
+      }
+      &.error{
+        border-color: red;
+      }
+    }
+  }
+
+  &__item__rule{
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-color-secondary);
+    margin: 20px 0;
+  }
+
+  &__btn{
+    padding: 12px;
+    border: 2px solid var(--main-color);
+    transition: all .3s ease 0s;
+    border-radius: 12px;
+    font-size: 18px;
+
+    &:hover{
+      background: var(--main-color);
+    }
+    &:focus{
+      background: var(--main-color);
+    }
+    &:disabled{
+      pointer-events: none;
+    }
+  }
+}

@@ -20,7 +20,7 @@ export default function RootLayout({
 
   return (
     <StoreProvider>
-      <html lang="en" data-theme={themeCookie?.value || undefined}>
+      <html lang="en" data-theme={themeCookie?.value || undefined} suppressHydrationWarning={true}>
         <head>
           <script dangerouslySetInnerHTML={{
             __html: `
@@ -34,9 +34,7 @@ export default function RootLayout({
           }} />
         </head>
         <body className={FontsVariables} >
-          {/* <div className="_container"> */}
           {children}
-          {/* </div> */}
         </body>
       </html>
     </StoreProvider>

@@ -192,7 +192,7 @@
       background: none;
 
       &:hover {
-        background: rgba($color: #000000, $alpha: .3);
+        background: var(--chat-popup-file-delete-bg);
       }
 
       svg {
@@ -251,6 +251,8 @@
     border-radius: 12px;
     margin-bottom: 2px;
     cursor: pointer;
+    color: #fff;
+    font-weight: 500;
   }
 }
 

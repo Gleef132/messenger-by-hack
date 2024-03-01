@@ -1,10 +1,10 @@
 'use server'
 
 import { IUser } from "@/models/IUser"
-import { cookies } from "next/headers"
+// import { cookies } from "next/headers"
 
-export async function getChatUsers():Promise<IUser[]> {
-  const token = cookies().has('token') ? `Bearer ${cookies().get('token')?.value}` : ''
+export async function getChatUsers(token:string):Promise<IUser[]> {
+  // const token = cookies().has('token') ? `Bearer ${cookies().get('token')?.value}` : ''
   const options = {
     headers: {
       authorization: token

@@ -22,10 +22,13 @@ export const popupSlice = createSlice({
       state.children = payload.children
       state.isCloseShow = payload.isCloseShow
     },
-    hiddenPopup(state) {
-      state.isActive = false
-      state.children = ''
-      state.isCloseShow = true
+    hiddenPopup() {
+      // state.isActive = false
+      // state.children = ''
+      // state.isCloseShow = true
+      return {
+        ...initialState
+      }
     }
   }
 })

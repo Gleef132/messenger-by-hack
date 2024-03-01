@@ -1,12 +1,20 @@
 'use client'
-import { FC, Fragment, useEffect, useState } from 'react'
+import { FC, Fragment, useEffect, useRef, useState } from 'react'
 import cl from './searchList.module.scss'
 import { useAppSelector } from '@/hooks/redux'
 import ChatLink from '@/components/chats/chatLink/chatLink'
 
-const SearchList: FC = () => {
+interface ISearchListProps {
+  username: string;
+}
+
+const SearchList: FC<ISearchListProps> = ({ username }) => {
   const { searchedUsers, isSearchFocus, chatUsers, isSearchValue } = useAppSelector(state => state.searchSlice)
   const [usersId, setUsersId] = useState<Set<string>>(new Set())
+  const { username: currentUsername } = useAppSelector(state => state.userSlice)
+
+  const myChats = searchedUsers.filter(user => usersId.has(user._id))
+  const globalChats = searchedUsers.filter(user => !usersId.has(user._id))
 
   useEffect(() => {
     chatUsers.map(user => {
@@ -19,16 +27,15 @@ const SearchList: FC = () => {
       {!isSearchValue && <div className={cl.my__users}>
         {chatUsers?.map(user => {
           return (
-            <ChatLink active='false' changeActiveUser={() => null} user={user} key={user._id} variant='secondary' />
+            <ChatLink username={currentUsername ? currentUsername : username} user={user} key={user._id} variant='secondary' />
           )
         })}
       </div>
       }
-      {searchedUsers.length > 0 && isSearchValue && <div className={cl.search__users}>
+      {!!myChats.length && isSearchValue && <div className={cl.search__users}>
         {(() => {
           let count = 0;
-          return searchedUsers?.map((user) => {
-            if (!usersId.has(user._id)) return;
+          return myChats.map((user) => {
             if (count > 5) return;
             const isFirst = count === 0;
             count += 1;
@@ -38,7 +45,7 @@ const SearchList: FC = () => {
                 return (
                   <Fragment key={myUser._id}>
                     {isFirst && <h1 className={cl.search__users__title}>Chats</h1>}
-                    <ChatLink active='false' changeActiveUser={() => null} user={myUser} key={myUser._id} variant='primary' />
+                    <ChatLink username={currentUsername ? currentUsername : username} user={myUser} key={myUser._id} variant='primary' />
                   </Fragment>
                 );
               }
@@ -46,18 +53,17 @@ const SearchList: FC = () => {
           });
         })()}
       </div>}
-      {searchedUsers.length > 0 && isSearchValue && <div className={cl.search__users}>
+      {!!globalChats.length && isSearchValue && <div className={cl.search__users}>
         {(() => {
           let count = 0;
-          return searchedUsers?.map((user) => {
-            if (usersId.has(user._id)) return;
+          return globalChats.map((user) => {
             if (count > 5) return;
             const isFirst = count === 0;
             count += 1;
             return (
               <Fragment key={user._id}>
                 {isFirst && <h1 className={cl.search__users__title}>Global Search</h1>}
-                <ChatLink active='false' changeActiveUser={() => null} user={user} key={user._id} variant='primary' />
+                <ChatLink username={currentUsername ? currentUsername : username} user={user} key={user._id} variant='primary' />
               </Fragment>
             );
           });

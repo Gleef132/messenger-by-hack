@@ -7,20 +7,25 @@
   top: 0;
   left: 0;
   transform: translate(100%, 0);
-  transition: all .3s ease 0s;
+  transition: transform .3s ease 0s;
 
   &.active {
     transform: translate(0, 0);
   }
 
+  &.hidden{
+    transform: translate(-40%, 0);
+  }
+
   &__header {
     width: 100%;
+    height: 70px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 15px;
     gap: 20px;
-    align-items: center;
-    border-bottom: 1px solid var(--setting-border-color);
+    // border-bottom: 1px solid var(--border-color);
 
     h1 {
       flex: 1;
@@ -59,13 +64,8 @@
     align-items: center;
     justify-content: center;
     margin-top: 40px;
-    // aspect-ratio: 1 / 1;
 
     img {
-      // position: absolute;
-      // width: 100%;
-      // top: 0;
-      // left: 0;
       width: 120px;
       height: 120px;
       object-fit: cover;
@@ -85,12 +85,9 @@
     }
 
     &__text {
-      // position: absolute;
-      // width: 100%;
       bottom: 0px;
       left: 0px;
       padding: 15px;
-      // background: linear-gradient(0deg, rgba(0, 0, 0, .8) 0%, rgba(0, 0, 0, 0) 100%);
       text-align: center;
       h3{
         font-size: 20px;
@@ -100,6 +97,7 @@
       p {
         margin-top: 10px;
         font-size: 14px;
+        font-weight: 500;
         color: var(--main-color);
         text-transform: lowercase;
       }
@@ -120,7 +118,7 @@
     svg{
       width: 100%;
       height: 100%;
-      fill: var(--settings-svg);
+      fill: var(--svg-secondary-color);
     }
   }
   &__footer__item__text{
@@ -140,6 +138,7 @@
       align-items: center;
       gap: 15px;
       padding: 10px;
+      cursor: pointer;
       div{
         position: relative;
         width: 22px;
@@ -148,7 +147,7 @@
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        border: 2px solid #fff;
+        border: 2px solid var(--setting-radio-border);
         &.active{
           border-color: var(--main-color);
           &::before{
@@ -163,8 +162,24 @@
       }
 
       &:hover{
-        background: #555;
+        background: var(--setting-radio-hover);
         border-radius: 8px;
     }
+  }
+}
+
+.change__user{
+  width: 100%;
+  height: 100%;
+  background: var(--setting-bg);
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  transform: translate(100%, 0);
+  transition: all .3s ease 0s;
+
+  &.active {
+    transform: translate(0, 0);
   }
 }

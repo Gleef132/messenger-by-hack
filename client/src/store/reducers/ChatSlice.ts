@@ -56,6 +56,11 @@ export const chatSlice = createSlice({
     },
     userSetLastMessage(state, { payload }: PayloadAction<ISetLastMessage>) {
       state.setLastMessage = payload.setLastMessage
+    },
+    resetChat() {
+      return {
+        ...initialState
+      }
     }
   }
 })

@@ -84,7 +84,7 @@ const Search: FC<ILanguageData> = (language) => {
             <ArrowSvg />
           </div>
         </div>
-        <input type="text" id='search' value={value} placeholder={languageData ? languageData.search.inputPlaceholder : language.search.inputPlaceholder} onChange={(e) => changeSearchQuery(e.target.value)} onFocus={() => dispatch(searchFocus(true))} />
+        <input type="text" id='search' value={value} autoComplete='off' placeholder={languageData ? languageData.search.inputPlaceholder : language.search.inputPlaceholder} onChange={(e) => changeSearchQuery(e.target.value)} onFocus={() => dispatch(searchFocus(true))} />
       </label>
     </div>
   )

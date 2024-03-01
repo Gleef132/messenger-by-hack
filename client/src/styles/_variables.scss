@@ -1,40 +1,53 @@
 // Variables
 html[data-theme="dark"] {
   --body-color: #212121;
+  --body-background: url('/images/chat-bg-pattern-dark.png') #0F0F0F;
   --side-bar-color: #222222;
   --side-bar-setting-fill: #fff;
   --list-bg: #212121;
   --text-color-primary: rgb(255, 255, 255);
   --text-color-secondary: #AAAAAA;
-  --main-color: rgb(123, 113, 198);
-  // --border-color: #EEE;
+  --main-color: #7b71c6;
+  --border-color: #000;
   --search-bg: #262626;
   --search-list-bg: #333;
 
   --setting-bg: #212121;
+  --setting-radio-border: #fff;
+  --setting-radio-hover: #3a3939;
+  --setting-input-border: #777;
+  --setting-input-border-hover: #ccc;
   --setting-svg-hover: #323232;
   --setting-border-color: #424242;
 
   --settings-svg: #AAAAAA;
 
   --user-info-bg: #212121;
-  // --setting-svg-hover: #323232;
-  // --setting-border-color: #424242;
+
+  --video-bg: #212121;
+  --video-svg: #fff;
+  --video-svg-hover: #7a7a7a;
 
   --chat-bg: #212121;
   --chat-bg-main: #111;
   --chat-bg-hover: #262626;
-  --chat-content-header-bg: #292929;
+  --chat-content-header-bg: #212121;
   --chat-content-footer-bg: transparent;
   --chat-input-bg: #212121;
   --chat-emoji-fill: #fff;
   --chat-emoji-bg: #212121;
   --chat-emoji-bg-hover: #333;
-  --chat-send-bg: #212121;
-  --chat-send-bg-hover: #333;
+  --chat-send-bg: #7b71c6;
+  --chat-send-bg-hover: #6e64b6;
+  --chat-footer-send-svg: #fff;
+  --chat-footer-delete-bg: #262626;
+  --chat-footer-delete-bg-hover: #363636;
+  --chat-footer-delete-svg: #E53935;
   --chat-options-bg: #212121;
+  --chat-options-svg: #fff;
   --chat-option-hover: #111;
   --message-bg: #212121;
+  --message-bg-my: #7b71c6;
   --message-vector: #212121;
   --message-check-fill: #fff;
   --blue-color: #2D9CDB;
@@ -61,25 +74,83 @@ html[data-theme="dark"] {
   --popup-close-color: rgb(160, 160, 160);
   --popup-close-bg-hover: rgba(160, 160, 160, .1);
   --popup-close-color-hover: #fff;
+  --chat-popup-file-delete-bg: rgba($color: #000000, $alpha: .3);
 }
 
 html[data-theme="light"] {
+
+  --chat-popup-file-delete-bg: #ececec;
+
+  --popup-close-color: #a0a0a0;
+  --popup-close-bg-hover: rgba(160, 160, 160, .1);
+  --popup-close-color-hover: #a0a0a0;
+
+  --list-bg: #fff;
+
+  --svg-main-color: #27AE6A;
+  --svg-main-color-hover: #15ca70;
+  --svg-secondary-color: #70757A;
+
+  --setting-bg: #fff;
+  --setting-radio-border: #70757A;
+  --setting-radio-hover: #d8d8d8;
+  --setting-input-border: #777;
+  --setting-input-border-hover: #383737;
+
+  --setting-svg-hover: #ececec;
+  --setting-border-color: #8f8d8d;
+
+  --settings-svg: #AAAAAA;
+
+  --user-info-bg: #fff;
+
+  --video-bg: #fff;
+  --video-svg: #6d6d6d;
+  --video-svg-hover: #e9e9e9;
+
+  --chat-content-header-bg: #fff;
+  --chat-content-footer-bg: transparent;
+  --chat-input-bg: #212121;
+  --chat-emoji-fill: #fff;
+  --chat-emoji-bg: #212121;
+  --chat-emoji-bg-hover: #333;
+  --chat-send-bg: #32ce73;
+  --chat-send-bg-hover: #25b963;
+  --chat-footer-send-svg: #fff;
+  --chat-footer-delete-bg: #fff;
+  --chat-footer-delete-bg-hover: #ececec;
+  --chat-footer-delete-svg: #e60909;
+  --chat-options-bg: #fff;
+  --chat-options-svg: #000;
+  --chat-option-hover: #ececec;
+  --message-bg-my: #D9FDD3;
+  --message-vector: #F4F4F7;
+  --message-check-fill: #27AE6A;
+  --blue-color: #2D9CDB;
+  --message-icon-bg-default: #3993FB;
+  --message-icon-bg-default-my: rgb(123, 113, 198);
+  --message-icon-bg-red: #E53935;
+  --message-icon-bg-green: #4FAE4E;
+  --message-icon-bg-orange: #FB8C00;
+
   --body-color: #fff;
+  --body-background: url('/images/chat-bg-pattern-light.png') #e7decd;
+
   --side-bar-color: #F0F0F0;
   --side-bar-setting-fill: #000;
   --text-color-primary: rgba(0, 0, 0, 0.85);
-  --text-color-secondary: rgba(0, 0, 0, 0.45);
+  --text-color-secondary: #505050;
   --main-color: #27AE60;
-  --border-color: #EEE;
+  --border-color: #E7DECD;
   --search-bg: #EEE;
   --search-list-bg: #ccc;
   --chat-bg: #FAFAFA;
   --chat-bg-main: #F9F9F9;
   --chat-bg-hover: #EEE;
-  --chat-input-bg: #EEE;
-  --chat-emoji-fill: #000;
+  --chat-input-bg: #fff;
+  --chat-emoji-fill: #424242;
   --chat-emoji-bg: #EEE;
-  --chat-emoji-bg-hover: #F4F4F7;
+  --chat-emoji-bg-hover: #ececec;
   --message-bg: #F4F4F7;
   --blue-color: #2D9CDB;
   --auth-bg: #fff;

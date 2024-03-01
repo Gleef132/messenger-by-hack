@@ -4,23 +4,20 @@ import HomePage from '@/components/screens/home/home'
 import styles from './page.module.scss'
 import { redirect } from 'next/navigation'
 import { getChatUsers, getUser } from './actions'
-import { IUser } from '@/models/IUser'
 import Popup from '@/components/ui/popup/popup'
 import { languages } from '@/lib/languages';
 
 export default async function Home() {
   const cookiesList = cookies()
-  const hasTokenCookie = cookiesList.has('token')
+  const tokenCookie = cookiesList.get('token')
   const languageCookie = cookiesList.get('language')
 
-  // let user = {};
-
-  if (!hasTokenCookie) {
+  if (!tokenCookie?.value) {
     redirect('/auth')
   }
 
   const user = await getUser()
-  const chatUsers = await getChatUsers()
+  const chatUsers = await getChatUsers(`Bearer ${tokenCookie.value}`)
 
   return (
     <>

@@ -18,8 +18,9 @@ import { useRedirect } from '@/hooks/useRedirect'
 import { languageSlice } from '@/store/reducers/LanguageSlice'
 import { ILanguageData } from '@/models/ILanguage'
 import dynamic from 'next/dynamic'
-import { useTheme } from '@/hooks/useTheme'
 import { IUser } from '@/models/IUser'
+import { chatUsersSlice } from '@/store/reducers/ChatUsersSlice'
+import { userSlice } from '@/store/reducers/UserSlice'
 interface IHomePage {
   language: ILanguageData;
   user: IUser;
@@ -37,11 +38,11 @@ const HomePage: FC<IHomePage> = ({ language, user, chatUsers }) => {
   const { changeLanguage } = languageSlice.actions
   const { isChatActive } = useAppSelector(state => state.chatSlice)
   const { isSettingActive } = useAppSelector(state => state.settingSlice)
-  const { isUserInfoActive } = useAppSelector(state => state.userSlice)
   const { languageData } = useAppSelector(state => state.languageSlice)
 
   useEffect(() => {
     dispatch(changeLanguage(language))
+
     socket.current = new WebSocket(`${process.env.NEXT_PUBLIC_SOCKET_API}`)
     dispatch(setSocket({ socket: socket.current, isConnected: false }))
 
@@ -56,7 +57,6 @@ const HomePage: FC<IHomePage> = ({ language, user, chatUsers }) => {
   }, [])
 
   useRedirect()
-  useTheme()
 
   return (
     <>
@@ -70,8 +70,8 @@ const HomePage: FC<IHomePage> = ({ language, user, chatUsers }) => {
                 <h1 className={`${cl.home__title} title`}>{languageData ? languageData.title : language.title}</h1>
                 <Search {...language} />
                 <div className={cl.home__item__content}>
-                  <ChatList chatUsers={chatUsers} />
-                  <SearchList />
+                  <ChatList chatUsers={chatUsers} username={user.username} />
+                  <SearchList username={user.username} />
                 </div>
               </div>
             </div>

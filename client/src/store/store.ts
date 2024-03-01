@@ -7,6 +7,8 @@ import settingSlice from "./reducers/SettingSlice";
 import popupSlice from "./reducers/PopupSlice";
 import fileSlice from "./reducers/FileSlice";
 import languageSlice from "./reducers/LanguageSlice";
+import chatUsersSlice from "./reducers/ChatUsersSlice";
+import themeSlice from "./reducers/ThemeSlice";
 
 const rootReducer = combineReducers({
   chatSlice,
@@ -17,6 +19,8 @@ const rootReducer = combineReducers({
   popupSlice,
   fileSlice,
   languageSlice,
+  chatUsersSlice,
+  themeSlice,
 })
 
 export const setupStore = () => {

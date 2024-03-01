@@ -19,13 +19,13 @@ const FileIcon: FC<IFileIconProps> = ({ isMyMessage, name, text, isDefault, isDo
   const type = name.split('.').pop() as string
   const hoverStyle = !downloadHandle && cl.no__hover
   const defaultStyle = isDefault && cl.default
-  // const downloadingStyle = isDownloading && cl.downloading
+
   const types = {
     pdf: cl.red,
     zip: cl.orange,
     xlsx: cl.green,
-    exe: cl.default,
-    docx: cl.default,
+    exe: defaultStyle,
+    docx: defaultStyle,
   }[type] || ''
 
   return (

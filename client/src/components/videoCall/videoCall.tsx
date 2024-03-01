@@ -36,7 +36,6 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const [iceCandidates, setIceCandidates] = useState<RTCIceCandidate[]>([]);
   const peerConnection = useRef<RTCPeerConnection>(new RTCPeerConnection());
-  // let candidatesQueue: RTCIceCandidateInit[] = [];
 
   const token = `Bearer ${JSON.parse(localStorage.getItem('token') as string)}`;
   const { username, path: myPath } = useAppSelector(state => state.userSlice)
@@ -53,9 +52,6 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
           setLocalStream(stream);
           setVideoActive(videoEnabled)
           if (videoRef.current && videoEnabled) videoRef.current.srcObject = stream;
-          // if (audioRef.current) audioRef.current.srcObject = stream;
-
-          // peerConnection.current = new RTCPeerConnection();
 
           if (stream.getVideoTracks().length > 0) {
             // Если видео доступно, добавляем его в соединение
@@ -68,7 +64,6 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
             console.log('add audio track in useEffect')
             peerConnection.current?.addTrack(track, stream);
           });
-          console.log('whaf')
           peerConnection.current.onicecandidate = handleIceCandidate
           peerConnection.current.ontrack = handleTrackEvent;
           peerConnection.current.onconnectionstatechange = () => {
@@ -81,10 +76,7 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
               dispatch(hiddenPopup())
             }
           }
-          // if (offer) {
-          //   peerConnection.current.setRemoteDescription(new RTCSessionDescription(offer));
-          //   return console.log('set remote');
-          // }
+
           if (offer) return;
           peerConnection.current.createOffer()
             .then(offer => {
@@ -102,25 +94,19 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
               };
               socket.sendMessage(message);
             })
-            .catch(e => console.log('useEffect createOffer', e))
+            .catch(e => console.log('useEffect createOffer', e));
         })
         .catch(() => {
           if (videoEnabled) {
-            // Если пользователь не разрешил видео, пробуем только аудио
             setupMediaAndCall(false);
+          } else {
+            dispatch(hiddenPopup());
           }
         });
     };
     setupMediaAndCall(true);
   }, []);
 
-  // const handleIceCandidate = (event: RTCPeerConnectionIceEvent) => {
-  //   console.log('trying pushIceCandidate')
-  //   if (event.candidate) {
-  //     console.log('pushIceCandidate')
-  //     candidatesQueue.push(event.candidate);
-  //   }
-  // };
 
   useEffect(() => {
     if (peerConnection.current.signalingState === "stable" && iceCandidates.length > 0) {
@@ -147,20 +133,6 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
     }
   }
 
-  // const handleTrackEvent = (event: RTCTrackEvent) => {
-  //   if (!event.streams[0]) return;
-
-  //   if (event.track.kind === 'video' && videoRef.current) {
-  //     videoRef.current.srcObject = event.streams[0];
-  //   }
-  //   if (event.track.kind === 'audio' && audioRef.current) {
-  //     audioRef.current.srcObject = event.streams[0];
-  //     if (localStream && !localStream.getAudioTracks().includes(event.track)) {
-  //       // Отключить локальную аудиодорожку
-  //       event.streams[0].getAudioTracks()[0].enabled = false;
-  //     }
-  //   }
-  // };
   const handleTrackEvent = (event: RTCTrackEvent) => {
     console.log('handleTrackEvent Not Working')
     if (!event.streams[0]) return;
@@ -213,59 +185,13 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
 
   const handleAnswer = (answer: RTCSessionDescriptionInit) => {
     peerConnection.current.setRemoteDescription(new RTCSessionDescription(answer))
-      .then(() => {
-        // Отправить все собранные ICE-кандидаты после установки удаленного описания
-        // candidatesQueue.forEach(candidate => {
-        // console.log('send ice candidate answer handle')
-        // candidatesQueue.forEach(candidate => {
-        //   console.log('send candidate', candidate)
-        //   const message: ISocketCandidate = {
-        //     token,
-        //     candidate,
-        //     clientId: _id,
-        //     event: 'candidate'
-        //   };
-        //   socket.sendMessage(message);
-        // })
-        // });
-        // candidatesQueue = [];
-      })
       .catch(e => console.log('handleAnswer ERROR', e))
   };
-
-  // const handleCandidate = (candidate: RTCIceCandidateInit) => {
-  //   console.log('add ice candidate', candidate)
-  //   peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate));
-  // }
 
   const handleCandidate = (candidate: RTCIceCandidateInit) => {
     console.log('add ice candidate', candidate)
     peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate));
   }
-
-  // const handleCandidate = (candidate: RTCIceCandidateInit) => {
-  //   if (peerConnection.current.remoteDescription) {
-  //     console.log('addIceCandidate', candidate)
-  //     peerConnection.current?.addIceCandidate(new RTCIceCandidate(candidate));
-  //     if (offer && clientId) {
-  //       console.log('send ice candidate candidate handle')
-  //       candidatesQueue.forEach(candidate => {
-  //         console.log('send candidate', candidate)
-  //         const message: ISocketCandidate = {
-  //           token,
-  //           candidate,
-  //           clientId,
-  //           event: 'candidate'
-  //         };
-  //         socket.sendMessage(message);
-  //       })
-  //       candidatesQueue = [];
-  //     }
-  //   } else {
-  //     console.log('pushIceCandidate')
-  //     candidatesQueue.push(candidate);
-  //   }
-  // };
 
   const answerCall = () => {
     if (offer && clientId) {
@@ -326,7 +252,6 @@ const VideoCall: FC<IVideoCallProps> = ({ offer, name, path, _id, clientId }) =>
             </> :
             <button className={`${cl.video__btn} ${cl.red}`} onClick={endCall}><CallSvg /></button>
           }
-          {/* <button className={offer ? `${cl.video__btn} ${cl.green}` : `${cl.video__btn} ${cl.red}`} onClick={() => offer ? answerCall() : endCall()}><CallSvg /></button> */}
           <button className={cl.video__btn} disabled={!localStream?.getVideoTracks().length} onClick={toggleVideo}>{videoActive ? <VideoOnSvg /> : <VideoOffSvg />}</button>
         </div>
       </div>

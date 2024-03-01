@@ -11,12 +11,12 @@
       background: var(--message-icon-bg-default);
 
       &::after {
-        background: linear-gradient(45deg, lighten(rgba(0, 0, 0, .5), 15%) 50%, var(--main-color) 50%);
+        background: linear-gradient(45deg, lighten(rgba(0, 0, 0, .5), 15%) 50%, var(--message-bg-my) 50%);
       }
     }
 
     .file__text{
-      color: #fff;
+      color: var(--text-color-primary);
     }
   }
 
@@ -67,20 +67,6 @@
       pointer-events: none;
     }
 
-    // &.downloading{
-    //   &::after{
-    //     // display: none;
-    //   }
-
-    //   .file__icon__svg{
-    //     opacity: 1;
-    //   }
-
-    //   .file__icon__text {
-    //     opacity: 0;
-    //   }
-    // }
-
     &:hover {
       &::after {
         width: 0;
@@ -102,6 +88,7 @@
     margin-top: 8px;
     opacity: 1;
     transition: opacity .3s ease 0s;
+    color: #fff;
   }
 
   &__icon__svg {

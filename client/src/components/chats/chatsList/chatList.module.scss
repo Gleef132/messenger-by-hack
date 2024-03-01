@@ -6,6 +6,9 @@
   z-index: -1000;
   transition: opacity 0s ease .3s;
   padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 
   &.active {
     // transition: opacity 0s linear 0s;

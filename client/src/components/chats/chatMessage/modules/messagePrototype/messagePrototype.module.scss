@@ -31,16 +31,24 @@
         stroke: var(--message-vector);
       }
     }
+
+    .message__image__text{
+      &.border{
+        border-bottom-left-radius: 0px;
+      }
+    }
   }
 
   &.right {
     margin-left: auto;
     // text-align: right;
-    background: var(--main-color);
+    background: var(--message-bg-my);
     .message__image__text{
-      background: var(--main-color);
+      background: var(--message-bg-my);
+      &.border{
+        border-bottom-right-radius: 0px;
+      }
     }
-
     div {
       justify-content: flex-end;
     }
@@ -64,13 +72,8 @@
     border-radius: 0px;
     display: flex;
     justify-content: space-between !important;
-
-    &.border__right{
-      border-bottom-right-radius: 8px;
-    }
-    &.border__left{
-      border-bottom-left-radius: 8px;
-    }
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
   }
 
   &__info {
@@ -118,8 +121,8 @@
     bottom: -3px;
 
     path {
-      fill: var(--main-color);
-      stroke: var(--main-color);
+      fill: var(--message-bg-my);
+      stroke: var(--message-bg-my);
     }
 
     &.left {

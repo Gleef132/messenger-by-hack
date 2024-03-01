@@ -13,7 +13,7 @@ const FileMessage: FC<IChatMessageProps> = ({ ...props }) => {
 
   const { message, isMyMessage, files } = { ...props }
   const { files: progress } = useAppSelector(state => state.fileSlice)
-  const [downloadProgresses, setDownloadProgresses] = useState<number[]>(files?.map(file => 0) || [])
+  const [downloadProgresses, setDownloadProgresses] = useState<number[]>(files?.map(file => -1) || [])
   const [isDownloading, setIsDownloading] = useState<boolean[]>(files?.map(file => false) || [])
 
   const controllerRef = useRef(new AbortController())
@@ -43,10 +43,9 @@ const FileMessage: FC<IChatMessageProps> = ({ ...props }) => {
         link.click()
         link.remove()
         setIsDownloading(prev => prev.map((item, i) => i === index ? false : item))
-        setDownloadProgresses(prev => prev.map((item, i) => i === index ? 0 : item))
+        setDownloadProgresses(prev => prev.map((item, i) => i === index ? -1 : item))
       }
     } catch (error) {
-      // console.log(error)
       setIsDownloading(prev => prev.map((item, i) => i === index ? false : item))
     }
   }
@@ -65,11 +64,11 @@ const FileMessage: FC<IChatMessageProps> = ({ ...props }) => {
             key={file._id}
             downloadHandle={() => downloadFile(file._id, file.name, index)}
             abortHandle={() => abortHandle(index)}
-            isDownloading={!!downloadProgresses[index]}
+            isDownloading={!!isDownloading[index]}
             isDefault={false}
             isMyMessage={isMyMessage}
             name={file.name}
-            text={downloadProgresses[index] ? downloadProgresses[index] + '%' : progress[index]?.status === 'loading' ? `${progress[index]?.progress}%` : file.size}
+            text={downloadProgresses[index] > -1 ? downloadProgresses[index] + '%' : progress[index]?.status === 'loading' ? `${progress[index]?.progress}%` : file.size}
           />
         )}
         {message}

@@ -9,6 +9,7 @@ import { IUser } from '@/models/IUser'
 import Link from 'next/link'
 import { settingSlice } from '@/store/reducers/SettingSlice'
 import Avatar from '../ui/avatar/avatar'
+import { chatSlice } from '@/store/reducers/ChatSlice'
 
 interface IAsideProps {
   user: IUser;
@@ -16,15 +17,17 @@ interface IAsideProps {
 
 const Aside: FC<IAsideProps> = ({ user }) => {
 
-  // const [avatar, setAvatar] = useState<string>(path)
-  // const { path } = useAppSelector(state => state.userSlice)
-  const { changeSettingActive } = settingSlice.actions
   const dispatch = useAppDispatch()
-  const isImage = user.path.includes('http')
-  const gradient = user.path.split(' ').join(',')
-  // useEffect(() => {
-  //   setAvatar(path)
-  // }, [path])
+  const { changeSettingActive } = settingSlice.actions
+  const { resetChat } = chatSlice.actions
+  const { name, path } = useAppSelector(state => state.userSlice)
+  const exitUser = () => {
+    localStorage.clear()
+    document.cookie = `token="";expires=Thu, 01 Jan 1970 00:00:01 GMT";`
+    setTimeout(() => {
+      dispatch(resetChat())
+    }, 100);
+  }
 
   return (
     <aside className={cl.sidebar}>
@@ -34,11 +37,7 @@ const Aside: FC<IAsideProps> = ({ user }) => {
             <LogoSvg />
           </div>
           <div className={cl.sidebar__avatar}>
-            {/* {isImage ?
-              <img src={user.path} alt="Avatar" /> :
-              <div className={cl.sidebar__avatar__gradient} style={{ background: `linear-gradient(${gradient})` }}>{user.name}</div>
-            } */}
-            <Avatar pathProps={user.path} nameProps={user.name} styles={cl.sidebar__avatar__gradient} />
+            <Avatar pathProps={path ? path : user.path} nameProps={name ? name : user.name} styles={cl.sidebar__avatar__gradient} />
           </div>
         </div>
         <Navigation />
@@ -46,7 +45,7 @@ const Aside: FC<IAsideProps> = ({ user }) => {
           <div className={cl.sidebar__setting} onClick={() => dispatch(changeSettingActive(true))}>
             <SettingSvg />
           </div>
-          <Link href={'/auth'} className={cl.sidebar__setting} onClick={() => document.cookie = `token="";expires=Thu, 01 Jan 1970 00:00:01 GMT";`}>
+          <Link href={'/auth'} className={cl.sidebar__setting} onClick={exitUser}>
             <ExitSvg />
           </Link>
         </div>

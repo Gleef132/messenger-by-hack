@@ -1,15 +1,17 @@
-"use client"
+'use client'
 
 import { FC, useState } from 'react'
 import cl from './settings.module.scss'
-import { ArrowSvg, LanguageSettingSvg, ThemeSvg } from '../svgs';
+import { ArrowSvg, LanguageSettingSvg, PencilSvg, ThemeSvg } from '../svgs';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import { getCookie } from '@/utils/getCookie';
 import { languageSlice } from '@/store/reducers/LanguageSlice';
 import { getLanguage } from '@/utils/getLanguage';
-import { ILanguageData } from '@/models/ILanguage';
-import { useTheme } from '@/hooks/useTheme';
 import Avatar from '../ui/avatar/avatar';
+import { setCookie } from '@/utils/setCookie';
+import { themeSlice } from '@/store/reducers/ThemeSlice';
+import { ThemeType } from '@/models/ThemeType';
+import ChangeProfile from './changeProfile/changeProfile';
 
 interface ISettingsProps {
   closeSettings: () => void;
@@ -18,88 +20,99 @@ interface ISettingsProps {
 
 const Settings: FC<ISettingsProps> = ({ closeSettings, isActive }) => {
 
-  const { name, username, path } = useAppSelector(state => state.userSlice)
+  const { name } = useAppSelector(state => state.userSlice)
   const { languageData } = useAppSelector(state => state.languageSlice)
   const [languageActive, setLanguageActive] = useState<string>(() => getCookie('language') || 'en')
-  const [themeActive, setThemeActive] = useState<string>(document.documentElement.getAttribute('data-theme') || '')
+  const [isProfileActive, setIsProfileActive] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const { changeLanguage } = languageSlice.actions
-  const { setTheme } = useTheme()
-  const isImage = path.includes('http')
-  const gradient = path.split(' ').join(',')
+  const { theme } = useAppSelector(state => state.themeSlice)
+  const { changeTheme } = themeSlice.actions
 
   const changeLanguageHandle = (language: string) => {
     setLanguageActive(language)
-    if (typeof window !== 'undefined') {
-      document.cookie = `language=${language}`
-    }
+    setCookie('language', language)
     dispatch(changeLanguage(getLanguage()))
   }
 
-  const changeThemeHandle = (theme: 'light' | 'dark') => {
-    setThemeActive(theme)
-    setTheme(theme)
+  const changeThemeHandle = (theme: ThemeType) => {
+    dispatch(changeTheme(theme))
   }
+
+  const settingsStyles = isActive ? `${cl.settings} ${cl.active}` : cl.settings
+  const settingsHiddeStyles = isProfileActive ? `${cl.hidden}` : ''
 
 
   return (
-    <div className={isActive ? `${cl.settings} ${cl.active}` : cl.settings}>
-      <div className={cl.settings__header}>
-        <div className={cl.settings__icon} onClick={closeSettings}>
-          <ArrowSvg />
+    <>
+      <div className={`${settingsStyles} ${settingsHiddeStyles}`}>
+        <div className={cl.settings__header}>
+          <div className={cl.settings__icon} onClick={closeSettings}>
+            <ArrowSvg />
+          </div>
+          <h1>{languageData?.setting.text}</h1>
+          <div className={cl.settings__icon} onClick={() => setIsProfileActive(true)}>
+            <PencilSvg />
+          </div>
         </div>
-        <h1>{languageData?.setting.text}</h1>
-        <div className={cl.settings__icon}>
+        <div className={cl.settings__content}>
+          <div className={cl.settings__avatar}>
+            <Avatar styles={cl.settings__avatar__gradient} />
+            <div className={cl.settings__avatar__text}>
+              <h3>{name}</h3>
+              <p className='text'>{languageData?.userState.online}</p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className={cl.settings__content}>
-        <div className={cl.settings__avatar}>
-          <Avatar styles={cl.settings__avatar__gradient} />
-          <div className={cl.settings__avatar__text}>
-            <h3>{username}</h3>
-            <p className='text'>{languageData?.userState.online}</p>
+        <div className={cl.settings__footer}>
+          <div className={cl.settings__footer__item}>
+            <div className={cl.settings__footer__item__text}>
+              <div className={cl.settings__footer__svg}>
+                <ThemeSvg />
+              </div>
+              {languageData?.theme.text}
+            </div>
+            <div className={cl.settings__footer__item__radios}>
+              <div className={cl.settings__footer__item__radio} onClick={() => changeThemeHandle('light')}>
+                <div className={theme === 'light' ? cl.active : ''} />
+                {languageData?.theme.light}
+              </div>
+              <div className={cl.settings__footer__item__radio} onClick={() => changeThemeHandle('dark')}>
+                <div className={theme === 'dark' ? cl.active : ''} />
+                {languageData?.theme.dark}
+              </div>
+            </div>
+          </div>
+          <div className={cl.settings__footer__item}>
+            <div className={cl.settings__footer__item__text}>
+              <div className={cl.settings__footer__svg}>
+                <LanguageSettingSvg />
+              </div>
+              {languageData?.language.text}
+            </div>
+            <div className={cl.settings__footer__item__radios}>
+              <div className={cl.settings__footer__item__radio} onClick={() => changeLanguageHandle('en')}>
+                <div className={languageActive === 'en' ? cl.active : ''} />
+                {languageData?.language.english}
+              </div>
+              <div className={cl.settings__footer__item__radio} onClick={() => changeLanguageHandle('ru')}>
+                <div className={languageActive === 'ru' ? cl.active : ''} />
+                {languageData?.language.russian}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div className={cl.settings__footer}>
-        <div className={cl.settings__footer__item}>
-          <div className={cl.settings__footer__item__text}>
-            <div className={cl.settings__footer__svg}>
-              <ThemeSvg />
-            </div>
-            {languageData?.theme.text}
+      <div className={isProfileActive ? `${cl.change__user} ${cl.active}` : cl.change__user}>
+        <div className={cl.settings__header}>
+          <div className={cl.settings__icon} onClick={() => setIsProfileActive(false)}>
+            <ArrowSvg />
           </div>
-          <div className={cl.settings__footer__item__radios}>
-            <div className={cl.settings__footer__item__radio} onClick={() => changeThemeHandle('light')}>
-              <div className={themeActive === 'light' ? cl.active : ''} />
-              {languageData?.theme.light}
-            </div>
-            <div className={cl.settings__footer__item__radio} onClick={() => changeThemeHandle('dark')}>
-              <div className={themeActive === 'dark' ? cl.active : ''} />
-              {languageData?.theme.dark}
-            </div>
-          </div>
+          <h1>{languageData?.setting.text}</h1>
         </div>
-        <div className={cl.settings__footer__item}>
-          <div className={cl.settings__footer__item__text}>
-            <div className={cl.settings__footer__svg}>
-              <LanguageSettingSvg />
-            </div>
-            {languageData?.language.text}
-          </div>
-          <div className={cl.settings__footer__item__radios}>
-            <div className={cl.settings__footer__item__radio} onClick={() => changeLanguageHandle('en')}>
-              <div className={languageActive === 'en' ? cl.active : ''} />
-              {languageData?.language.english}
-            </div>
-            <div className={cl.settings__footer__item__radio} onClick={() => changeLanguageHandle('ru')}>
-              <div className={languageActive === 'ru' ? cl.active : ''} />
-              {languageData?.language.russian}
-            </div>
-          </div>
-        </div>
+        <ChangeProfile />
       </div>
-    </div>
+    </>
   )
 }
 

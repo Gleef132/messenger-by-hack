@@ -93,6 +93,29 @@ class UserController {
       return error
     }
   }
+
+  async changeUserData(req, res) {
+    try {
+      const id = await getId(req.body.token)
+      let updateFields = {}
+      if (req.body.name) {
+        updateFields.name = req.body.name
+      }
+      if (req.file && req.file.path) {
+        updateFields.path = process.env.SERVER_URL + '/' + req.file.path
+      }
+      const user = await User.findByIdAndUpdate(id, {
+        $set: updateFields
+      }, {
+        new: true,
+        useFindAndModify: false
+      })
+      return res.json(user)
+    } catch (error) {
+      res.status(500).json({ message: 'Change user data error' })
+    }
+  }
+  
 }
 
 module.exports = new UserController()

@@ -1,22 +1,24 @@
-.video{
+.video {
   width: 420px;
   height: 520px;
-  background: var(--chat-send-bg);
+  background: var(--video-bg);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   border-radius: 24px;
 
-  &.fill{
+  &.fill {
     width: 100vw;
     height: 100vh;
-    .video__avatar{
+    border-radius: 0;
+
+    .video__avatar {
       top: 50%;
     }
   }
 
-  &__item{
+  &__item {
     width: 100%;
     height: 100%;
     position: relative;
@@ -26,25 +28,25 @@
     gap: 30px;
   }
 
-  &__avatar{
+  &__avatar {
     position: absolute;
     top: 40%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     gap: 15px;
     align-items: center;
     justify-content: center;
 
-    img{
+    img {
       width: 80px;
       height: 80px;
       border-radius: 50%;
       object-fit: cover;
     }
 
-    &__gradient{
+    &__gradient {
       width: 80px;
       height: 80px;
       display: flex;
@@ -54,88 +56,101 @@
     }
   }
 
-  &__text{
+  &__text {
     font-size: 18px;
   }
 
-  &__btns{
+  &__btns {
     display: flex;
     gap: 30px;
     justify-content: center;
     align-items: center;
     margin-bottom: 50px;
 
-    .video__btn:nth-child(1){
+    .video__btn:nth-child(1) {
       width: 45px;
       height: 45px;
-      svg{
+
+      svg {
         width: 30px;
         height: 30px;
-        path{
-          fill: #fff;
+
+        path {
+          fill: var(--video-svg);
         }
       }
     }
 
-    .video__btn:nth-child(2){
-      svg{
+    .video__btn:nth-child(2) {
+      svg {
         width: 30px;
         height: 30px;
         stroke: #fff;
       }
     }
 
-    .video__btn:nth-child(3){
-      svg{
+    .video__btn:nth-child(3) {
+      svg {
         width: 30px;
         height: 30px;
         stroke: #fff;
       }
     }
-    .video__btn:nth-child(3):last-child{
+
+    .video__btn:nth-child(3):last-child {
       width: 45px;
       height: 45px;
-      svg{
+
+      svg {
         width: 25px;
         height: 25px;
+        stroke: var(--video-svg);
       }
     }
-    .video__btn:nth-child(4){
+
+    .video__btn:nth-child(4) {
       width: 45px;
       height: 45px;
-      svg{
+
+      svg {
         width: 25px;
         height: 25px;
       }
     }
   }
 
-  &__btn{
+  &__btn {
     width: 50px;
     height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #aaa;
+    border: 1px solid var(--video-svg);
     border-radius: 50%;
     transition: all .3s ease 0s;
 
-    &:hover{
-      background: #5e5d5d;
+    &:disabled {
+      pointer-events: none;
     }
 
-    &.red{
+    &:hover {
+      background: var(--video-svg-hover);
+    }
+
+    &.red {
       background: red;
       border-color: transparent;
-      &:hover{
+
+      &:hover {
         background: rgb(187, 5, 5);
       }
     }
 
-    &.green{
+    &.green {
       background: rgb(6, 209, 6);
       border-color: transparent;
-      &:hover{
+
+      &:hover {
         background: green;
       }
     }

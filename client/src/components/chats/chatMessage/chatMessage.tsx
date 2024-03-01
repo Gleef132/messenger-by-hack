@@ -9,7 +9,7 @@ const ChatMessage: FC<IChatMessageProps> = ({ ...props }) => {
   const { type } = { ...props }
   const messageTypes: { [key: string]: ReactNode } = {
     text: <TextMessage {...props} />,
-    audio: <AudioMessage />,
+    audio: <AudioMessage {...props} />,
     file: <FileMessage {...props} />,
     image: <ImageMessage {...props} />
   }

@@ -11,9 +11,11 @@ import { getCookie } from '@/utils/getCookie'
 import cl from './auth.module.scss'
 import { useRedirect } from '@/hooks/useRedirect'
 import { ILanguageData } from '@/models/ILanguage'
-import { useTheme } from '@/hooks/useTheme'
 import { createAvatarGradient } from '@/utils/createAvatarGradient'
 import { userSlice } from '@/store/reducers/UserSlice'
+import { IUser } from '@/models/IUser'
+import { chatUsersSlice } from '@/store/reducers/ChatUsersSlice'
+import { getChatUsers } from '@/app/actions'
 interface IAuth {
   language: ILanguageData;
 }
@@ -27,8 +29,8 @@ const Auth: FC<IAuth> = ({ language }) => {
 
   const dispatch = useAppDispatch()
   const { changeUserData } = userSlice.actions
+  const { changeChatUsers } = chatUsersSlice.actions
   const { languageData } = useAppSelector(state => state.languageSlice)
-  // const { auth: authLanguageData } = languageData
 
   const router = useRouter()
 
@@ -55,8 +57,13 @@ const Auth: FC<IAuth> = ({ language }) => {
         dispatch(changeUserData({
           path: user?.path || '',
           username: user?.username || '',
-          name: user?.name || ''
+          name: user?.name || '',
+          user: user || {} as IUser,
         }))
+        return res.data.token as string
+      })
+      .then(token => {
+        getChatUsers(`Bearer ${token}`).then(res => dispatch(changeChatUsers({ users: res.length ? res : null })))
       })
       .catch(e => setValidateText(e.response.data.message))
       .finally(() => setIsLoading(false))
@@ -84,15 +91,20 @@ const Auth: FC<IAuth> = ({ language }) => {
         dispatch(changeUserData({
           path: user?.path || '',
           username: user?.username || '',
-          name: user?.name || ''
+          name: user?.name || '',
+          user: user || {} as IUser,
         }))
+        return res.data.token as string
+      })
+      .then(token => {
+        getChatUsers(`Bearer ${token}`).then(res => dispatch(changeChatUsers({ users: res.length ? res : null })))
       })
       .catch(e => setValidateText(e.response.data.message))
       .finally(() => setIsLoading(false))
   }
 
   useRedirect()
-  useTheme()
+
   useEffect(() => {
     const hasLanguageCookie = getCookie('language')
     if (!hasLanguageCookie) {

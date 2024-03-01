@@ -1,12 +1,12 @@
 'use client'
 import { FC, useState, useEffect, useRef } from 'react'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { CameraSvg, ClipSvg, FileSvg, ImageSvg, InfoSvg, MicroSvg, SendSvg, TrashSvg } from '@/components/svgs'
+import { CameraSvg, ClipSvg, FileSvg, ImageSvg, InfoSvg, MicroOnSvg, MicroSvg, SendSvg, TrashSvg } from '@/components/svgs'
 import { ISocketMessage, ISocketRead, ISocketResponse, ISocketTyping } from '@/models/ISocket'
 import ChatMessages from '../chatMessages/chatMessages'
 import cl from './chatContent.module.scss'
 import { chatSlice } from '@/store/reducers/ChatSlice'
-import { ChatMessageTypes, IFile, IMessage } from '@/models/IMessage'
+import { IMessage } from '@/models/IMessage'
 import { addZero } from '@/utils/add-zero'
 import { useAutoResizeTextArea } from '@/hooks/useAutoResizeTextArea'
 import { userSlice } from '@/store/reducers/UserSlice'
@@ -17,33 +17,38 @@ import { popupSlice } from '@/store/reducers/PopupSlice'
 import ChatPopupContent from '../chatPopupContent/chatPopupContent'
 import VideoCall from '@/components/videoCall/videoCall'
 import Avatar from '@/components/ui/avatar/avatar'
+import { chatUsersSlice } from '@/store/reducers/ChatUsersSlice'
 
 type SendMessage = {
   event: 'key'
   e: React.KeyboardEvent<HTMLTextAreaElement>
 } | {
   event: 'click'
-  e: React.MouseEvent<HTMLButtonElement>
+  e: React.MouseEvent<HTMLDivElement>
 }
 
 const ChatContent: FC = () => {
   const { isOnline, isTyping, path, name, messages, _id, setLastMessage, chatId } = useAppSelector(state => state.chatSlice)
   const { username } = useAppSelector(state => state.userSlice)
   const { languageData } = useAppSelector(state => state.languageSlice)
+  const { users: chatUsers } = useAppSelector(state => state.chatUsersSlice)
   const [messagesState, setMessagesState] = useState<IMessage[]>(messages)
   const dispatch = useAppDispatch()
   const { userOnline, userTyping } = chatSlice.actions
   const { changeUserInfoActive } = userSlice.actions
+  const { changeChatUsers } = chatUsersSlice.actions
   const { showPopup } = popupSlice.actions
   const [value, setValue] = useState<string>('')
   const [isTypingState, setIsTypingState] = useState<boolean>(false)
   const [isRecording, setIsRecording] = useState<boolean>(false)
+  const isTrySendingRecordRef = useRef<boolean>(false)
   // const [messageType, setMessageType] = useState<ChatMessageTypes>('text')
-  const [files, setFiles] = useState<IFile[]>([])
+  // const [files, setFiles] = useState<IFile[]>([])
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
   const footerLineRef = useRef<HTMLDivElement>(null)
   const mediaRecorder = useRef<MediaRecorder | null>(null)
   useAutoResizeTextArea(textAreaRef.current, value, 290)
+  const token = `Bearer ${JSON.parse(localStorage.getItem('token') as string)}`
 
   const socket = useSocket({
     messageEvent: (message) => acceptMessage(message),
@@ -57,8 +62,12 @@ const ChatContent: FC = () => {
       if (event === 'key' && e.code === 'Enter' && !e.shiftKey) {
         return e.preventDefault()
       }
-      return;
+      return
     };
+    if (event === 'key') {
+      if (e.code !== 'Enter') return;
+      if (e.shiftKey) return;
+    }
     const date = new Date()
     const fullDate = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`
     const time = `${addZero(date.getHours())}:${addZero(date.getMinutes())}`
@@ -77,7 +86,6 @@ const ChatContent: FC = () => {
       message: value,
       token,
       type: 'text',
-      files
     }
     const newMessage: IMessage = {
       _id: '' + _id + Date.now() + date + Math.random(),
@@ -90,24 +98,59 @@ const ChatContent: FC = () => {
       isRead: false,
       isSend: true,
       type: 'text',
-      files
     }
     if (event === 'key') {
       if (e.code === 'Enter' && !e.shiftKey) {
+        // if ()
         e.preventDefault()
         setValue('')
         textAreaRef.current?.focus()
-        // socket?.send(JSON.stringify(message))
         socket.sendMessage(message)
+        if (messagesState.length === 0) {
+          dispatch(changeChatUsers({
+            users: [{
+              _id: Date.now().toString(),
+              messages: [newMessage],
+              name,
+              chats: [],
+              isOnline,
+              isTyping,
+              path,
+              password: '',
+              username: name,
+            },
+            ...chatUsers || []
+            ]
+          }))
+        }
         setMessagesState(prev => [...prev, newMessage])
         typingMessage(false)
         setLastMessage(newMessage)
       }
       return;
     }
+    // if()
     setValue('')
     textAreaRef.current?.focus()
     socket.sendMessage(message)
+    if (messagesState.length === 0) {
+      dispatch(changeChatUsers({
+        users: [{
+          _id: Date.now().toString(),
+          messages: [newMessage],
+          name,
+          chats: [],
+          isOnline,
+          isTyping,
+          path,
+          password: '',
+          username: name,
+        },
+        ...chatUsers || []
+        ]
+      }))
+    }
+    setMessagesState(prev => [...prev, newMessage])
     setLastMessage(newMessage)
     typingMessage(false)
   }
@@ -204,15 +247,9 @@ const ChatContent: FC = () => {
         });
 
         mediaRecorder.current.addEventListener("stop", async () => {
-          const audioBlob = new Blob(audioChunks);
-          const file: File = new File([audioBlob], "audio.mp3", {
-            type: 'audio/mpeg',
-          });
-          const formData = new FormData();
-          formData.append("file", file);
-          new Audio(URL.createObjectURL(audioBlob)).play()
-          await axios.post(`${process.env.NEXT_PUBLIC_SERVER_API}api/upload`, formData)
-
+          if (isTrySendingRecordRef.current) {
+            sendRecord(audioChunks)
+          }
         });
         mediaRecorder.current?.start()
         setIsRecording(true)
@@ -221,9 +258,71 @@ const ChatContent: FC = () => {
         alert('Пожалуйста, предоставьте разрешение на использование микрофона');
       })
   }
-  const endRecording = () => {
-    mediaRecorder.current?.stop()
+
+  const endRecording = (isTrySending: boolean) => {
+    isTrySendingRecordRef.current = isTrySending
     setIsRecording(false)
+    mediaRecorder.current?.stop()
+  }
+
+  const sendRecord = async (audioChunks: Blob[]) => {
+    const date = new Date()
+    const fullDate = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`
+    const time = `${addZero(date.getHours())}:${addZero(date.getMinutes())}`
+    const audioBlob = new Blob(audioChunks);
+    const file: File = new File([audioBlob], "audio.mp3", {
+      type: 'audio/mpeg',
+    });
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_API}api/upload`, formData)
+    const message: ISocketMessage = {
+      clientId: _id,
+      clientIsOnline: isOnline,
+      date: {
+        fullDate,
+        time,
+      },
+      event: 'message',
+      from: username,
+      isRead: false,
+      isSend: true,
+      message: response.data.id,
+      token,
+      type: 'audio',
+    }
+    const newMessage: IMessage = {
+      _id: '' + _id + Date.now() + '' + Math.random(),
+      message: response.data.id,
+      date: {
+        fullDate,
+        time,
+      },
+      from: username,
+      isRead: false,
+      isSend: true,
+      type: 'audio',
+    }
+    socket.sendMessage(message)
+    if (messagesState.length === 0) {
+      dispatch(changeChatUsers({
+        users: [{
+          _id: Date.now().toString(),
+          messages: [newMessage],
+          name,
+          chats: [],
+          isOnline,
+          isTyping,
+          path,
+          password: '',
+          username: name,
+        },
+        ...chatUsers || []
+        ]
+      }))
+    }
+    setMessagesState(prev => [...prev, newMessage])
+    setLastMessage(newMessage)
   }
 
   const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'file') => {
@@ -246,12 +345,34 @@ const ChatContent: FC = () => {
     }))
   }
 
+  // const showCallModal = () => {
+  //   dispatch(showPopup({
+  //     children: <VideoCall name={name} path={path} _id={_id} />,
+  //     isCloseShow: false,
+  //   }))
+  // }
   const showCallModal = () => {
-    dispatch(showPopup({
-      children: <VideoCall name={name} path={path} _id={_id} />,
-      isCloseShow: false,
-    }))
-  }
+    const setupMediaAndCall = (videoEnabled: boolean) => {
+      navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: videoEnabled,
+      })
+        .then(stream => {
+          // Если пользователь разрешил использование микрофона (и видео, если videoEnabled = true), открываем модальное окно
+          dispatch(showPopup({
+            children: <VideoCall name={name} path={path} _id={_id} />,
+            isCloseShow: false,
+          }));
+        })
+        .catch(() => {
+          if (videoEnabled) {
+            // Если пользователь не разрешил использование видео, пробуем только аудио
+            setupMediaAndCall(false);
+          }
+        });
+    };
+    setupMediaAndCall(true); // Сначала пробуем видео и аудио
+  };
 
   return (
     <div className={cl.chat}>
@@ -260,7 +381,6 @@ const ChatContent: FC = () => {
           <div className={cl.chat__header__content}>
             <div className={cl.chat__header__item}>
               <div className={cl.chat__avatar}>
-                {/* <img src={path} alt="avatar" /> */}
                 <Avatar pathProps={path} nameProps={name} styles={cl.chat__avatar__gradient} />
               </div>
               <div className={cl.chat__header__name}>
@@ -303,15 +423,15 @@ const ChatContent: FC = () => {
             <textarea ref={textAreaRef} disabled={isRecording} onKeyDown={(e) => sendMessage({ e, event: 'key' })} autoFocus placeholder={languageData?.chat.inputPlaceholder} value={value} onChange={typingHandle} />
             {isRecording && <Timer />}
           </div>
-          {isRecording && <div className={cl.chat__footer__delete} onClick={() => endRecording()}>
+          {isRecording && <div className={cl.chat__footer__delete} onClick={() => endRecording(false)}>
             <TrashSvg />
           </div>}
-          <button className={value || isRecording ? `${cl.chat__footer__btn} ${cl.active}` : cl.chat__footer__btn} onClick={(e) => value || isRecording ? endRecording() : startRecording()}>
-            <div className={cl.chat__footer__svg}>
+          <button className={value || isRecording ? `${cl.chat__footer__btn} ${cl.active}` : cl.chat__footer__btn}>
+            <div className={cl.chat__footer__svg} onClick={(e) => value ? sendMessage({ e, event: 'click' }) : endRecording(true)}>
               <SendSvg />
             </div>
-            <div className={cl.chat__footer__svg}>
-              <MicroSvg />
+            <div className={cl.chat__footer__svg} onClick={startRecording}>
+              <MicroOnSvg />
             </div>
           </button>
         </div>

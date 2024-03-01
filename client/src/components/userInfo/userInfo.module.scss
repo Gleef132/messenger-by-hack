@@ -1,18 +1,20 @@
 .user__info {
-  max-width: 450px;
-  width: 100%;
+  position: relative;
   background: var(--user-info-bg);
   transition: margin-right .3s ease 0s;
-  margin-right: -450px;
+  width: 25vw;
+  height: 100%;
+  margin-right: -25vw;
+  flex-shrink: 0;
 
   &__header {
     width: 100%;
+    height: 70px;
     display: flex;
     justify-content: space-between;
     padding: 15px;
     gap: 20px;
     align-items: center;
-    border-bottom: 1px solid var(--setting-border-color);
 
     h1 {
       flex: 1;
@@ -22,8 +24,8 @@
   }
 
   &__icon {
-    width: 35px;
-    height: 35px;
+    width: 34px;
+    height: 34px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -35,18 +37,51 @@
       background: var(--setting-svg-hover);
     }
 
-    svg {
-      width: 25px;
-      height: 25px;
-      margin-left: 1px;
-      fill: var(--svg-secondary-color);
+    // svg {
+    //   width: 25px;
+    //   height: 25px;
+    //   margin-left: 1px;
+    //   fill: var(--svg-secondary-color);
+    // }
+    div{
+      position: relative;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+      &::before,
+      &::after{
+        content : "";
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background: var(--svg-secondary-color);
+      }
+      &::before{
+        transform: rotate(45deg);
+      }
+      &::after{
+        transform: rotate(-45deg);
+      }
     }
   }
 
   &__avatar {
     width: 100%;
     position: relative;
-    aspect-ratio: 1 / 1;
+    padding-bottom: 100%;
+
+    &__gradient{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+      font-size: 46px;
+    }
 
     img {
       position: absolute;
@@ -63,10 +98,12 @@
       left: 0px;
       padding: 15px;
       background: linear-gradient(0deg, rgba(0, 0, 0, .8) 0%, rgba(0, 0, 0, 0) 100%);
+      color: #fff;
 
       p {
         margin-top: 3px;
         font-size: 14px;
+        color: #bdbcbc;
       }
     }
   }

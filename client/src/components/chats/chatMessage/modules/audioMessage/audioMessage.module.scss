@@ -1,0 +1,123 @@
+@import '@/styles/mixins';
+
+.message{
+  position: relative;
+  max-width: 250px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background: var(--message-bg);
+  padding: 5px 15px;
+  border-radius: 8px;
+  @include adaptiv-value('font-size', 18, 16, 0);
+
+  &.left {
+    margin-right: auto;
+    text-align: left;
+    border-bottom-left-radius: 0;
+  }
+
+  &.right {
+    margin-left: auto;
+    background: var(--message-bg-my);
+    border-bottom-right-radius: 0;
+  }
+
+  &__vector {
+    position: absolute;
+    bottom: -3px;
+
+    &.left {
+      left: 2px;
+      transform: translate(-100%, 0) rotateY(180deg);
+      path {
+        fill: var(--message-bg);
+        stroke: var(--message-bg);
+      }
+    }
+
+    &.right {
+      right: 2px;
+      transform: translate(100%, 0);
+      path {
+        fill: var(--message-bg-my);
+        stroke: var(--message-bg-my);
+      }
+    }
+  }
+  
+  &__btn{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--main-color);
+    cursor: pointer;
+
+    &__svg{
+      position: relative;
+      width: 30px;
+      height: 30px;
+      &.right{
+        svg{
+          position: absolute;
+          top: 0;
+          left: 1.5px;
+        }
+      }
+      svg{
+        fill: #fff;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+  }
+
+  &__content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 200px;
+    width: 100%;
+    gap: 10px;
+  }
+  &__info{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+  }
+  &__duration{
+    color: var(--text-color-secondary);
+  }
+  &__time{
+    color: var(--text-color-secondary);
+    display: flex;
+    align-items: center;
+
+    font-size: 12px;
+
+    svg {
+      margin-top: -2px;
+      width: 20px;
+      height: 15px;
+
+      path {
+        stroke: var(--message-check-fill);
+      }
+    }
+  }
+  &__bar{
+    // max-width: 150px;
+    width: 100%;
+    height: 30px;
+  }
+}

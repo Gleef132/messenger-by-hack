@@ -10,29 +10,31 @@ import { getMessages } from '@/utils/getMessages'
 import { ISocketMessage, ISocketResponse } from '@/models/ISocket'
 import { IMessage } from '@/models/IMessage'
 import Avatar from '@/components/ui/avatar/avatar'
+import { useSocket } from '@/api/use-socket'
 
 interface IChatLinkProps {
   user: IUser;
-  active: string;
-  changeActiveUser: (value: string) => void;
   variant: 'default' | 'primary' | 'secondary';
+  username: string;
 }
 
-const ChatLink: FC<IChatLinkProps> = ({ user, active, changeActiveUser, variant }) => {
-  // const { name, path, isOnline, isTyping, _id } = user
+const ChatLink: FC<IChatLinkProps> = ({ user, variant, username }) => {
   let isSecured = false;
-  // const { isSecured, messages } = getMessages(user, id)
   const messages = user.messages || []
   const [userState, setUserState] = useState<IUser>(user)
-  // const username = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('username') as string) : ''
-  const [username, setUsername] = useState<string>('')
   const [amountUnreadMessages, setAmountUnreadMessasges] = useState<number>(numberUnreadMessages(messages, username))
   const [messagesState, setMessagesState] = useState<IMessage[]>(messages)
   const [lastMessage, setLastMessage] = useState<IMessage>(messages[messages.length - 1] || {})
   const [isRead, setIsRead] = useState<boolean>(lastMessage?.isRead)
   const { userChatContent, userMessages, userChatActive, userSetLastMessage } = chatSlice.actions
+  const { _id } = useAppSelector(state => state.chatSlice)
   const dispatch = useAppDispatch()
-  const { socket } = useAppSelector(state => state.socketSlice)
+  useSocket({
+    messageEvent: (message) => acceptMessage(message),
+    onlineEvent: (message) => acceptOnline(message.clientId, message.isOnline),
+    readEvent: (message) => acceptRead(message.clientId),
+    typingEvent: (message) => acceptTyping(message.clientId, message.isTyping)
+  })
   const { username: chatUserName } = useAppSelector(state => state.chatSlice)
   let imageText = ''
   let fileText = ''
@@ -43,9 +45,6 @@ const ChatLink: FC<IChatLinkProps> = ({ user, active, changeActiveUser, variant 
     lastMessageText = lastMessage.type === 'file' ? fileText : imageText
   }
 
-  // let imageTitle = lastMessage.files.length > 1 ? `Send ${lastMessage.files.length} Photos` : 'Send Photo'
-  // let fileTitle = lastMessage.files.length > 1 ? `Send ${lastMessage.files.length} Files` : 'Send File'
-
   const chatUserNameRef = useRef<string>(chatUserName)
 
   const clickHandle = () => {
@@ -53,7 +52,7 @@ const ChatLink: FC<IChatLinkProps> = ({ user, active, changeActiveUser, variant 
     dispatch(userMessages(messagesState))
     dispatch(userChatActive(true))
     dispatch(userSetLastMessage({ setLastMessage }))
-    changeActiveUser(userState._id)
+    // changeActiveUser(userState._id)
     if (lastMessage?.from !== username) {
       setIsRead(true)
     }
@@ -85,32 +84,23 @@ const ChatLink: FC<IChatLinkProps> = ({ user, active, changeActiveUser, variant 
     }
   }
 
-  useEffect(() => {
-    setUsername(JSON.parse(localStorage.getItem('username') as string))
-  }, [])
+  const acceptOnline = (clientId: string, isOnline: boolean) => {
+    if (userState._id === clientId) {
+      setUserState(prev => ({ ...prev, isOnline }))
+    }
+  }
 
-  useEffect(() => {
-    if (!socket) return;
-    socket.addEventListener('message', (message) => {
-      const parseMessage: ISocketResponse = JSON.parse(message.data)
-      switch (parseMessage.event) {
-        case 'message':
-          acceptMessage(parseMessage)
-          break
-        case 'read':
-          setIsRead(true)
-          break
-        case 'typing':
-          setUserState(prev => ({ ...prev, isTyping: parseMessage.isTyping }))
-          break
-        case 'online':
-          setUserState(prev => ({ ...prev, isOnline: parseMessage.isOnline }))
-          break
-        default:
-          return null
-      }
-    })
-  }, [socket])
+  const acceptRead = (clientId: string) => {
+    if (userState._id === clientId) {
+      setIsRead(true)
+    }
+  }
+
+  const acceptTyping = (clientId: string, isTyping: boolean) => {
+    if (userState._id === clientId) {
+      setUserState(prev => ({ ...prev, isTyping }))
+    }
+  }
 
   useEffect(() => {
     if (messages.length) {
@@ -122,8 +112,10 @@ const ChatLink: FC<IChatLinkProps> = ({ user, active, changeActiveUser, variant 
     chatUserNameRef.current = chatUserName
   }, [chatUserName])
 
+  const borderRadiusStyles = variant === 'primary' ? cl.border__radius : ''
+
   return (
-    variant !== 'secondary' ? <div className={active === userState?._id ? `${cl.user} ${cl.active}` : cl.user} onClick={clickHandle}>
+    variant !== 'secondary' ? <div className={_id === userState?._id ? `${cl.user} ${cl.active} ${borderRadiusStyles}` : `${cl.user} ${borderRadiusStyles}`} onClick={clickHandle}>
       <div className={cl.user__content}>
         <div className={cl.user__item}>
           <div className={cl.user__avatar}>
@@ -162,7 +154,6 @@ const ChatLink: FC<IChatLinkProps> = ({ user, active, changeActiveUser, variant 
     </div> :
       <div className={cl.user__secondary} onClick={clickHandle} >
         <div className={cl.user__secondary__content}>
-          {/* <img src={user.path} alt="avatar" /> */}
           <Avatar pathProps={user.path} nameProps={user.name} styles={cl.user__avatar__gradient} />
           <p>{user.name.split(' ')[0]}</p>
         </div>

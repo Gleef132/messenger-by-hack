@@ -7,6 +7,10 @@
   cursor: pointer;
   border-radius: 12px;
 
+  &.border__radius {
+    border-radius: 0;
+  }
+
   &.active {
     background: var(--main-color);
 
@@ -16,10 +20,18 @@
       }
     }
 
+    .user__name{
+      color: #fff;
+    }
+
     .user__info {
       path {
         stroke: #fff;
       }
+    }
+
+    .user__date {
+      color: #fff;
     }
 
     &:hover {

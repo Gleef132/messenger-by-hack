@@ -14,7 +14,7 @@ interface ISend {
 
 interface IUseSocket {
   messageEvent?: (message: ISocketResponse) => void;
-  readEvent?: () => void;
+  readEvent?: (message: ISocketResponse) => void;
   typingEvent?: (message: ISocketResponse) => void;
   onlineEvent?: (message: ISocketResponse) => void;
   offerEvent?: (message: ISocketResponse) => void;
@@ -42,7 +42,7 @@ export const useSocket = ({ messageEvent, readEvent, onlineEvent, typingEvent,an
           break
         case 'read':
           if(!readEvent) return;
-          readEvent()
+          readEvent(parseMessage)
           break
         case 'typing':
           if(!typingEvent) return;
