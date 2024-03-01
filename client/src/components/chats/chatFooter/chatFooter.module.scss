@@ -1,0 +1,213 @@
+@import '@/styles/mixins';
+
+.footer {
+  width: 100%;
+  height: max-content;
+  padding: 10px 10px 0 10px;
+  max-width: 700px;
+  margin: 0 auto 20px auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 10px;
+  position: relative;
+
+  &__line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(90deg, rgba(127, 127, 127, 0) 0%, rgba(127, 127, 127, 0.4) 2%, rgba(127, 127, 127, 0.4) 98%, rgba(127, 127, 127, 0) 100%);
+    transition: opacity .35s ease 0s;
+    height: 1px;
+    width: 100%;
+    opacity: 0;
+  }
+
+  &__emoji {
+    width: 40px;
+    height: 40px;
+    // background: var(--chat-emoji-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all .3s ease 0s;
+    margin-left: 10px;
+    margin-bottom: 2px;
+    margin-top: auto;
+    flex-shrink: 0;
+    position: relative;
+
+    &:hover {
+      background: var(--chat-emoji-bg-hover);
+
+      .footer__options {
+        opacity: 1;
+        z-index: 1;
+        transition: opacity .3s ease 0s;
+        // transition: opacity .3s ease .5s, z-index .3s ease .5s;
+      }
+    }
+
+    svg {
+      width: 25px;
+      height: 25px;
+      fill: var(--chat-emoji-fill);
+    }
+  }
+
+  &__options {
+    position: absolute;
+    opacity: 0;
+    transition: opacity .3s ease .3s, z-index .3s ease .3s;
+    z-index: -100;
+    top: -10px;
+    left: 0;
+    transform: translate(0, -100%);
+    background: var(--chat-options-bg);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 180px;
+    border-radius: 12px;
+
+    label:nth-child(2) {
+
+      svg,
+      path {
+        fill: none;
+        stroke: var(--chat-options-svg);
+      }
+    }
+  }
+
+  &__option {
+    display: flex;
+    color: var(--text-color-primary);
+    font-size: 16px;
+    align-items: center;
+    gap: 10px;
+    transition: background .3s ease 0s;
+    padding: 2px 5px;
+    border-radius: 6px;
+    font-weight: 600;
+
+    &:hover {
+      background: var(--chat-option-hover);
+    }
+
+    path {
+      fill: var(--chat-options-svg);
+    }
+  }
+
+  &__input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 6px 0;
+    height: max-content;
+    background: var(--chat-input-bg);
+    border-radius: 12px;
+
+    textarea {
+      width: 100%;
+      height: 44px;
+      max-height: 290px;
+      resize: none;
+      background: none;
+      flex: 1 1 auto;
+      padding: 12px 15px 12px 0;
+      @include adaptiv-value('font-size', 16, 14, 0);
+
+      &::-webkit-scrollbar {
+        width: 0;
+      }
+
+      &::placeholder {
+        @include adaptiv-value('font-size', 14, 12, 0);
+      }
+    }
+  }
+
+  &__btn {
+    // color: var(--main-color);
+    position: relative;
+    height: 55px;
+    width: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--chat-send-bg);
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: all .3s ease 0s;
+
+    &:hover {
+      background: var(--chat-send-bg-hover);
+    }
+
+    &.active {
+      .footer__svg {
+        transform: scale(1);
+
+        &:nth-child(2) {
+          transform: scale(0);
+        }
+      }
+    }
+  }
+
+  &__svg {
+    width: 100%;
+    height: 100%;
+    transition: transform .3s ease 0s;
+    transform: scale(0);
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg,
+    path {
+      fill: var(--chat-footer-send-svg);
+      width: 30px;
+    }
+
+    &:nth-child(2) {
+      transform: scale(1);
+
+      svg,
+      path {
+        fill: var(--chat-footer-send-svg);
+        width: 32px;
+      }
+    }
+  }
+
+  &__delete {
+    height: 55px;
+    width: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--chat-footer-delete-bg);
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: background .3s ease 0s;
+    cursor: pointer;
+
+    svg {
+      width: 25px;
+      fill: var(--chat-footer-delete-svg);
+      transition: fill .3s ease 0s;
+    }
+
+    &:hover {
+      background: var(--chat-footer-delete-bg-hover);
+    }
+  }
+}

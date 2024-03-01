@@ -6,7 +6,8 @@ import ChatMessage from '../chatMessage/chatMessage';
 
 interface IChatMessagesProps {
   messages: IMessage[];
-  footerHeight: string | number | undefined;
+  footerHeight: number;
+  // footerTextArea: React.RefObject<HTMLTextAreaElement>;
   scrollHandle: (condition: boolean) => void;
 }
 

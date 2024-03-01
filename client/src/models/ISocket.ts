@@ -1,9 +1,9 @@
 import { ChatMessageTypes, IFile } from "./IMessage";
 
-type eventsTypes = 'message' | 'read' | 'connection' | 'online' | 'typing' | 'offer' | 'answer' | 'leave' | 'candidate';
+export type EventsTypes = 'message' | 'read' | 'connection' | 'online' | 'typing' | 'offer' | 'answer' | 'leave' | 'candidate';
 
 export interface ISocketResponse {
-  event: eventsTypes;
+  event: EventsTypes;
   clientId: string;
   clientIsOnline: boolean;
   message: string;

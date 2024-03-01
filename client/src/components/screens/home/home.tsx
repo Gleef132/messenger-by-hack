@@ -78,7 +78,12 @@ const HomePage: FC<IHomePage> = ({ language, user, chatUsers }) => {
             <Settings isActive={isSettingActive} closeSettings={() => dispatch(changeSettingActive(false))} />
           </div>
           <div className={cl.home__item}>
-            {isChatActive && <ChatContent />}
+            {isChatActive ? <ChatContent /> :
+              <div className={cl.home__item__hello}>
+                <img src="/robot.gif" alt="Hello Gif" />
+                Welcome {user.name}
+              </div>
+            }
           </div>
           <UserInfo />
         </div>
