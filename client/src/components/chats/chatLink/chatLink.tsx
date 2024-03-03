@@ -1,5 +1,5 @@
 "use client"
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, memo, useEffect, useRef, useState } from 'react'
 import cl from './chatLink.module.scss'
 import { CheckReadSvg, CheckSendSvg, SecuredSvg } from '@/components/svgs'
 import { chatSlice } from '@/store/reducers/ChatSlice'
@@ -15,9 +15,11 @@ interface IChatLinkProps {
   user: IUser;
   variant: 'default' | 'primary' | 'secondary';
   username: string;
+  chatActive?: React.RefObject<string>;
+  changeChatActive?: (id: string) => void;
 }
 
-const ChatLink: FC<IChatLinkProps> = ({ user, variant, username }) => {
+const ChatLink: FC<IChatLinkProps> = ({ user, variant, username, chatActive, changeChatActive }) => {
   let isSecured = false;
   const messages = user.messages || []
   const [userState, setUserState] = useState<IUser>(user)
@@ -34,7 +36,9 @@ const ChatLink: FC<IChatLinkProps> = ({ user, variant, username }) => {
     readEvent: (message) => acceptRead(message.clientId),
     typingEvent: (message) => acceptTyping(message.clientId, message.isTyping)
   })
+
   const { username: chatUserName } = useAppSelector(state => state.chatSlice)
+  const chatUserNameRef = useRef<string>(chatUserName)
   let imageText = ''
   let fileText = ''
   let lastMessageText = lastMessage.message
@@ -44,9 +48,11 @@ const ChatLink: FC<IChatLinkProps> = ({ user, variant, username }) => {
     lastMessageText = lastMessage.type === 'file' ? fileText : imageText
   }
 
-  const chatUserNameRef = useRef<string>(chatUserName)
 
   const clickHandle = () => {
+    if (changeChatActive) {
+      changeChatActive(userState._id)
+    }
     dispatch(userChatContent(userState))
     dispatch(userMessages(messagesState))
     dispatch(userChatActive(true))
@@ -107,9 +113,10 @@ const ChatLink: FC<IChatLinkProps> = ({ user, variant, username }) => {
   }, [chatUserName])
 
   const borderRadiusStyles = variant === 'primary' ? cl.border__radius : ''
+  const isActive = chatActive?.current === userState._id || userState._id === _id
 
   return (
-    variant !== 'secondary' ? <div className={_id === userState?._id ? `${cl.user} ${cl.active} ${borderRadiusStyles}` : `${cl.user} ${borderRadiusStyles}`} onClick={clickHandle}>
+    variant !== 'secondary' ? <div className={isActive ? `${cl.user} ${cl.active} ${borderRadiusStyles}` : `${cl.user} ${borderRadiusStyles}`} onClick={clickHandle}>
       <div className={cl.user__content}>
         <div className={cl.user__item}>
           <div className={cl.user__avatar}>
@@ -154,4 +161,4 @@ const ChatLink: FC<IChatLinkProps> = ({ user, variant, username }) => {
   )
 }
 
-export default ChatLink
+export default memo(ChatLink)

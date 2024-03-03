@@ -1,15 +1,13 @@
 'use client'
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import ChatLink from '../chatLink/chatLink'
-import axios from 'axios'
 import { IUser } from '@/models/IUser'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { waitForConnection } from '@/utils/waitForConnection'
 import { ISocketOnline } from '@/models/ISocket'
-import cl from './chatList.module.scss'
 import { searchSlice } from '@/store/reducers/SearchSlice'
 import { useSocket } from '@/api/use-socket'
 import { chatUsersSlice } from '@/store/reducers/ChatUsersSlice'
+import cl from './chatList.module.scss'
 
 interface IChatListProps {
   chatUsers: IUser[];
@@ -18,9 +16,6 @@ interface IChatListProps {
 
 const ChatList: FC<IChatListProps> = ({ chatUsers, username }) => {
 
-  const [acitve, setActive] = useState<string>('')
-  // const [users, setUsers] = useState<IUser[]>(chatUsers)
-  // const { socket } = useAppSelector(state => state.socketSlice)
   const { isOnline } = useAppSelector(state => state.chatSlice)
   const { isSearchFocus } = useAppSelector(state => state.searchSlice)
   const { user } = useAppSelector(state => state.userSlice)
@@ -30,6 +25,7 @@ const ChatList: FC<IChatListProps> = ({ chatUsers, username }) => {
   const dispatch = useAppDispatch()
   const { socket, sendMessage } = useSocket()
   const [chatUsersCurrent, setChatUsersCurrent] = useState<IUser[]>(users === null ? [] : users.length ? users : chatUsers)
+  const activeChatRef = useRef<string>('')
 
   useEffect(() => {
     dispatch(chathUsers(chatUsersCurrent))
@@ -68,13 +64,13 @@ const ChatList: FC<IChatListProps> = ({ chatUsers, username }) => {
     return () => window.removeEventListener('unload', unloadHandler)
   }, [socket, users])
 
-  const changeActiveUser = (value: string) => {
-    setActive(value)
+  const changeChatActive = (id: string) => {
+    activeChatRef.current = id
   }
 
   return (
     <div className={!isSearchFocus ? `${cl.list} ${cl.active}` : cl.list}>
-      {chatUsersCurrent.map(item => <ChatLink key={item?._id} user={item} variant='default' username={user.username ? user.username : username} />)}
+      {chatUsersCurrent.map(item => <ChatLink key={item?._id} user={item} variant='default' username={user.username ? user.username : username} chatActive={activeChatRef} changeChatActive={changeChatActive} />)}
     </div>
   )
 }
