@@ -1,16 +1,11 @@
 'use client'
 
-import VideoCall from '@/components/videoCall/videoCall'
-import { useAppDispatch, useAppSelector } from "@/hooks/redux"
+import VideoCall from '@/components/videoCall/videoCall';
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { IMessage } from "@/models/IMessage";
-import { ISocketMessage, ISocketResponse } from "@/models/ISocket"
+import { ISocketMessage, ISocketResponse } from "@/models/ISocket";
 import { popupSlice } from "@/store/reducers/PopupSlice";
 import { createElement, useEffect } from "react";
-
-interface ISend {
-  message: ISocketMessage;
-  newMessage: IMessage;
-}
 
 interface IUseSocket {
   messageEvent?: (message: ISocketResponse) => void;
@@ -23,33 +18,32 @@ interface IUseSocket {
   leaveEvent?: () => void;
 }
 
-export const useSocket = ({ messageEvent, readEvent, onlineEvent, typingEvent,answerEvent,candidateEvent,leaveEvent,offerEvent }: IUseSocket = {}) => {
+export const useSocket = ({ messageEvent, readEvent, onlineEvent, typingEvent, answerEvent, candidateEvent, leaveEvent, offerEvent }: IUseSocket = {}) => {
   const { isConnected, socket } = useAppSelector(state => state.socketSlice)
-  // const { setLastMessage } = useAppSelector(state => state.chatSlice)
   const dispatch = useAppDispatch()
   const { showPopup } = popupSlice.actions
 
   useEffect(() => {
     if (socket === null) return;
 
-    const messageHandler = (message: {data: string}) => {
+    const messageHandler = (message: { data: string }) => {
       const parseMessage: ISocketResponse = JSON.parse(message.data)
       console.log(parseMessage.event)
       switch (parseMessage.event) {
         case 'message':
-          if(!messageEvent) return;
+          if (!messageEvent) return;
           messageEvent(parseMessage)
           break
         case 'read':
-          if(!readEvent) return;
+          if (!readEvent) return;
           readEvent(parseMessage)
           break
         case 'typing':
-          if(!typingEvent) return;
+          if (!typingEvent) return;
           typingEvent(parseMessage)
           break
         case 'online':
-          if(!onlineEvent) return;
+          if (!onlineEvent) return;
           onlineEvent(parseMessage)
           break
         case 'offer':
@@ -61,22 +55,22 @@ export const useSocket = ({ messageEvent, readEvent, onlineEvent, typingEvent,an
             clientId: parseMessage.clientId
           }
           dispatch(showPopup({
-            children: createElement(VideoCall,props),
+            children: createElement(VideoCall, props),
             isCloseShow: false
           }))
-          if(!offerEvent) return;
+          if (!offerEvent) return;
           offerEvent(parseMessage)
           break
         case 'answer':
-          if(!answerEvent) return;
+          if (!answerEvent) return;
           answerEvent(parseMessage)
           break
         case 'candidate':
-          if(!candidateEvent) return;
+          if (!candidateEvent) return;
           candidateEvent(parseMessage)
           break
         case 'leave':
-          if(!leaveEvent) return;
+          if (!leaveEvent) return;
           leaveEvent()
           break
         default:
@@ -96,5 +90,5 @@ export const useSocket = ({ messageEvent, readEvent, onlineEvent, typingEvent,an
     socket?.send(JSON.stringify(message))
   }
 
-  return { socket,sendMessage }
+  return { socket, sendMessage }
 }

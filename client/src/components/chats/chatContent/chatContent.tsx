@@ -1,11 +1,12 @@
 'use client'
-import { FC, useState, useEffect, useRef } from 'react'
+
+import { FC, useEffect, useRef, useState } from 'react'
 import { useAppSelector } from '@/hooks/redux'
-import ChatMessages from '../chatMessages/chatMessages'
-import cl from './chatContent.module.scss'
 import { IMessage } from '@/models/IMessage'
 import ChatFooter from '../chatFooter/chatFooter'
 import ChatHeader from '../chatHeader/chatHeader'
+import ChatMessages from '../chatMessages/chatMessages'
+import cl from './chatContent.module.scss'
 
 const ChatContent: FC = () => {
   const { messages } = useAppSelector(state => state.chatSlice)

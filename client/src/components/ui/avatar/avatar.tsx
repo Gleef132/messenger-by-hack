@@ -1,9 +1,9 @@
 'use client'
 
-import { FC } from 'react'
-import cl from './avatar.module.scss'
-import { useAppSelector } from '@/hooks/redux'
+import { useAppSelector } from '@/hooks/redux';
 import { getInitials } from '@/utils/getInitials';
+import { FC } from 'react';
+import cl from './avatar.module.scss';
 
 interface IAvatarProps {
   pathProps?: string;

@@ -1,7 +1,8 @@
-import { FC } from 'react'
-import cl from './textMessage.module.scss'
+'use client'
+
 import { IChatMessageProps } from '@/models/IMessage'
-import MessagePrototype from '../messagePrototype/messagePrototype'
+import { FC } from 'react'
+import MessagePrototype from './messagePrototype/messagePrototype'
 
 const TextMessage: FC<IChatMessageProps> = ({ ...props }) => {
   const { message } = { ...props }

@@ -1,11 +1,11 @@
 'use client'
 
+import { FC, useEffect, useRef, useState } from 'react';
 import { CheckReadSvg, CheckSendSvg, MessageVectorSvg, PauseSvg, PlaySvg } from '@/components/svgs';
-import { useRef, useEffect, useState, FC } from 'react';
-import WaveSurfer from 'wavesurfer.js';
-import cl from './audioMessage.module.scss'
-import { IChatMessageProps } from '@/models/IMessage';
 import { useAppSelector } from '@/hooks/redux';
+import { IChatMessageProps } from '@/models/IMessage';
+import WaveSurfer from 'wavesurfer.js';
+import cl from './audioMessage.module.scss';
 
 const AudioMessage: FC<IChatMessageProps> = ({ vectorCondition, isMyMessage, time, isRead, message }) => {
   const waveformRef = useRef<HTMLDivElement | null>(null);

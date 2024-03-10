@@ -1,2 +1,2 @@
-export {getUser} from './getUser'
-export {getChatUsers} from './getChatUsers'
+export { getChatUsers } from './getChatUsers'
+export { getUser } from './getUser'

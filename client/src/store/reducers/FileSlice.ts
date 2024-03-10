@@ -9,12 +9,6 @@ interface IState {
 }
 
 const initialState: IState = {
-  // files: [
-  //   { progress: 0, status: 'success' },
-  //   { progress: 0, status: 'success' },
-  //   { progress: 0, status: 'success' },
-  //   { progress: 0, status: 'success' },
-  // ],
   files: []
 }
 
@@ -31,7 +25,7 @@ export const fileSlice = createSlice({
         return file
       })
     },
-    changeFilesCount(state, {payload}: PayloadAction<IFile[]>){
+    changeFilesCount(state, { payload }: PayloadAction<IFile[]>) {
       state.files = payload
     }
   }

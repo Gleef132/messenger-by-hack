@@ -1,5 +1,5 @@
 import { ChatMessageTypes, IMessage } from "@/models/IMessage";
-import { ISocketMessage, EventsTypes } from "@/models/ISocket";
+import { ISocketMessage } from "@/models/ISocket";
 import { addZero } from "./add-zero";
 
 interface IParams {

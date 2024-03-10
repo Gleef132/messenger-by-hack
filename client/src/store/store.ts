@@ -1,14 +1,14 @@
-import { configureStore, combineReducers, getDefaultMiddleware } from "@reduxjs/toolkit";
-import chatSlice from './reducers/ChatSlice'
-import userSlice from "./reducers/UserSlice";
-import socketSlice from "./reducers/SocketSlice";
-import searchSlice from "./reducers/SearchSlice";
-import settingSlice from "./reducers/SettingSlice";
-import popupSlice from "./reducers/PopupSlice";
+import { combineReducers, configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import chatSlice from './reducers/ChatSlice';
+import chatUsersSlice from "./reducers/ChatUsersSlice";
 import fileSlice from "./reducers/FileSlice";
 import languageSlice from "./reducers/LanguageSlice";
-import chatUsersSlice from "./reducers/ChatUsersSlice";
+import popupSlice from "./reducers/PopupSlice";
+import searchSlice from "./reducers/SearchSlice";
+import settingSlice from "./reducers/SettingSlice";
+import socketSlice from "./reducers/SocketSlice";
 import themeSlice from "./reducers/ThemeSlice";
+import userSlice from "./reducers/UserSlice";
 
 const rootReducer = combineReducers({
   chatSlice,

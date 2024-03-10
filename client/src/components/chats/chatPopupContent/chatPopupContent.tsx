@@ -1,19 +1,19 @@
 'use client'
 
+import { useSocket } from '@/api/use-socket'
+import { TrashSvg } from '@/components/svgs'
+import FileIcon from '@/components/ui/fileIcon/fileIcon'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { useAutoResizeTextArea } from '@/hooks/useAutoResizeTextArea'
+import { IFile, IMessage } from '@/models/IMessage'
+import { ISocketMessage } from '@/models/ISocket'
+import { fileSlice } from '@/store/reducers/FileSlice'
+import { popupSlice } from '@/store/reducers/PopupSlice'
+import { addZero } from '@/utils/add-zero'
+import { formatBytes } from '@/utils/formatBytes'
+import axios from 'axios'
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
 import cl from './chatPopupContent.module.scss'
-import { useAutoResizeTextArea } from '@/hooks/useAutoResizeTextArea'
-import { TrashSvg } from '@/components/svgs'
-import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { popupSlice } from '@/store/reducers/PopupSlice'
-import FileIcon from '@/components/ui/fileIcon/fileIcon'
-import { formatBytes } from '@/utils/formatBytes'
-import { fileSlice } from '@/store/reducers/FileSlice'
-import axios from 'axios'
-import { IFile, IMessage } from '@/models/IMessage'
-import { addZero } from '@/utils/add-zero'
-import { ISocketMessage } from '@/models/ISocket'
-import { useSocket } from '@/api/use-socket'
 
 interface IChatPopupContentProps {
   type: 'image' | 'file';
@@ -78,9 +78,6 @@ const ChatPopupContent: FC<IChatPopupContentProps> = ({ files, type, prevValue, 
   }
 
   const sendMessage = async ({ e, event }: SendMessageType) => {
-    // if (event === 'key' && e.code === 'Enter' && !e.shiftKey) {
-    //   return e.preventDefault()
-    // }
     dispatch(changeFilesCount(filesState.map(file => ({ progress: 0, status: 'success' }))))
     const date = new Date()
     const fullDate = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`
@@ -88,7 +85,6 @@ const ChatPopupContent: FC<IChatPopupContentProps> = ({ files, type, prevValue, 
     const token = `Bearar ${JSON.parse(localStorage.getItem('token') as string)}`
     const messageValue = value.trim() ? value : ''
 
-    // let imagePaths: string[] = Array.from({ length: 4 }, () => '')
     const files: IFile[] = filesState.map(file => ({ _id: URL.createObjectURL(file), name: file.name, size: formatBytes(file.size) }))
 
     const message: ISocketMessage = {

@@ -1,15 +1,17 @@
+'use client'
+
 import { FC, useEffect } from 'react'
-import cl from './chatHeader.module.scss'
+import { useSocket } from '@/api/use-socket'
 import { CameraSvg, InfoSvg } from '@/components/svgs'
 import Avatar from '@/components/ui/avatar/avatar'
-import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { popupSlice } from '@/store/reducers/PopupSlice'
 import VideoCall from '@/components/videoCall/videoCall'
-import { userSlice } from '@/store/reducers/UserSlice'
-import { ISocketRead, ISocketResponse } from '@/models/ISocket'
-import { useSocket } from '@/api/use-socket'
-import { chatSlice } from '@/store/reducers/ChatSlice'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { IMessage } from '@/models/IMessage'
+import { ISocketRead, ISocketResponse } from '@/models/ISocket'
+import { chatSlice } from '@/store/reducers/ChatSlice'
+import { popupSlice } from '@/store/reducers/PopupSlice'
+import { userSlice } from '@/store/reducers/UserSlice'
+import cl from './chatHeader.module.scss'
 
 interface ChatHeaderProps {
   messagesState: IMessage[];

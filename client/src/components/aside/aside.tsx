@@ -1,15 +1,15 @@
 'use client'
-'use client'
-import { FC, useState, useEffect } from 'react'
-import { ExitSvg, LogoSvg, SettingSvg } from '../svgs'
+
+import { FC } from 'react'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import Navigation from '../navigation/navigation'
-import cl from './aside.module.scss'
 import { IUser } from '@/models/IUser'
-import Link from 'next/link'
-import { settingSlice } from '@/store/reducers/SettingSlice'
-import Avatar from '../ui/avatar/avatar'
 import { chatSlice } from '@/store/reducers/ChatSlice'
+import { settingSlice } from '@/store/reducers/SettingSlice'
+import Link from 'next/link'
+import Navigation from '../navigation/navigation'
+import { ExitSvg, LogoSvg, SettingSvg } from '../svgs'
+import Avatar from '../ui/avatar/avatar'
+import cl from './aside.module.scss'
 
 interface IAsideProps {
   user: IUser;

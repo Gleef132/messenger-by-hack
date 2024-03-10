@@ -1,7 +1,9 @@
+'use client'
+
+import { CheckReadSvg, CheckSendSvg, MessageVectorSvg } from '@/components/svgs'
+import { IChatMessageProps } from '@/models/IMessage'
 import { FC, PropsWithChildren } from 'react'
 import cl from './messagePrototype.module.scss'
-import { IChatMessageProps } from '@/models/IMessage'
-import { CheckReadSvg, CheckSendSvg, MessageVectorSvg } from '@/components/svgs'
 
 const MessagePrototype: FC<PropsWithChildren<IChatMessageProps>> = ({ isMyMessage, time, vectorCondition, children, isRead, type, message }) => {
 

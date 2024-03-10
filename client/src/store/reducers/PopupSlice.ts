@@ -23,9 +23,6 @@ export const popupSlice = createSlice({
       state.isCloseShow = payload.isCloseShow
     },
     hiddenPopup() {
-      // state.isActive = false
-      // state.children = ''
-      // state.isCloseShow = true
       return {
         ...initialState
       }

@@ -1,8 +1,9 @@
 'use client'
-import { FC, Fragment, useEffect, useRef, useState } from 'react'
-import cl from './searchList.module.scss'
-import { useAppSelector } from '@/hooks/redux'
+
 import ChatLink from '@/components/chats/chatLink/chatLink'
+import { useAppSelector } from '@/hooks/redux'
+import { FC, Fragment, useEffect, useState } from 'react'
+import cl from './searchList.module.scss'
 
 interface ISearchListProps {
   username: string;

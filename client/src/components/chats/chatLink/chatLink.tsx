@@ -1,15 +1,16 @@
 "use client"
+
 import { FC, memo, useEffect, useRef, useState } from 'react'
-import cl from './chatLink.module.scss'
-import { CheckReadSvg, CheckSendSvg, SecuredSvg } from '@/components/svgs'
-import { chatSlice } from '@/store/reducers/ChatSlice'
-import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { numberUnreadMessages } from '@/utils/number-unread-messages'
-import { IUser } from '@/models/IUser'
-import { ISocketResponse } from '@/models/ISocket'
-import { IMessage } from '@/models/IMessage'
-import Avatar from '@/components/ui/avatar/avatar'
 import { useSocket } from '@/api/use-socket'
+import { CheckReadSvg, CheckSendSvg, SecuredSvg } from '@/components/svgs'
+import Avatar from '@/components/ui/avatar/avatar'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { IMessage } from '@/models/IMessage'
+import { ISocketResponse } from '@/models/ISocket'
+import { IUser } from '@/models/IUser'
+import { chatSlice } from '@/store/reducers/ChatSlice'
+import { numberUnreadMessages } from '@/utils/number-unread-messages'
+import cl from './chatLink.module.scss'
 
 interface IChatLinkProps {
   user: IUser;

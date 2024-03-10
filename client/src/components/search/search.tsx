@@ -1,24 +1,18 @@
 'use client'
-import { FC, useEffect, useRef, useState } from 'react'
-import { ArrowSvg, SearchSvg } from '../svgs'
-import { IUser } from '@/models/IUser'
-import { useDebounce } from '@/hooks/useDebounce'
-import Loader from '../ui/loader/loader'
-import axios from 'axios'
-import { chatSlice } from '@/store/reducers/ChatSlice'
+
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import cl from './search.module.scss'
-import { searchSlice } from '@/store/reducers/SearchSlice'
+import { useDebounce } from '@/hooks/useDebounce'
 import { ILanguageData } from '@/models/ILanguage'
+import { IUser } from '@/models/IUser'
+import { searchSlice } from '@/store/reducers/SearchSlice'
+import axios from 'axios'
+import { FC, useEffect, useState } from 'react'
+import { ArrowSvg, SearchSvg } from '../svgs'
+import cl from './search.module.scss'
 
 const Search: FC<ILanguageData> = (language) => {
 
   const [value, setValue] = useState<string>('')
-  const [users, setUsers] = useState<IUser[]>([])
-  // const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isFinded, setIsFinded] = useState<boolean>(false)
-  const [isFocused, setIsFocused] = useState<boolean>(false)
-  const { userChatContent, userChatActive } = chatSlice.actions
   const { searchFocus, searchUsers, searchValue } = searchSlice.actions
   const { isSearchFocus } = useAppSelector(state => state.searchSlice)
   const dispatch = useAppDispatch()
@@ -29,9 +23,6 @@ const Search: FC<ILanguageData> = (language) => {
     if (!text.trim()) {
       setValue('')
       dispatch(searchValue(false))
-      // setUsers([])
-      // setIsLoading(false)
-      setIsFinded(false)
       return;
     }
     setValue(text)
@@ -47,21 +38,13 @@ const Search: FC<ILanguageData> = (language) => {
       }
     }
     const response = await axios.get<IUser[]>(`${process.env.NEXT_PUBLIC_SERVER_API}api/search`, options)
-    setUsers(response.data)
     dispatch(searchUsers(response.data))
-    setIsFinded(response.data.length ? false : true)
-  }
-
-  const onClickUser = (user: IUser) => {
-    dispatch(userChatContent(user))
-    dispatch(userChatActive(true))
   }
 
   useEffect(() => {
     if (value.trim()) {
       getSearchUsers(encodeURI(value))
     } else {
-      setUsers([])
       dispatch(searchUsers([]))
     }
   }, [debounceValue])
@@ -77,7 +60,6 @@ const Search: FC<ILanguageData> = (language) => {
             dispatch(searchFocus(false))
             setValue('')
             dispatch(searchValue(false))
-            setIsFinded(false)
             if (!isSearchFocus) return;
             e.preventDefault()
           }}>

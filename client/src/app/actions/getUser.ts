@@ -1,8 +1,9 @@
 'use server'
+
 import { IUser } from "@/models/IUser"
 import { cookies } from "next/headers"
 
-export async function getUser():Promise<IUser> {
+export async function getUser(): Promise<IUser> {
   const token = cookies().has('token') ? `Bearer ${cookies().get('token')?.value}` : ''
   const options = {
     headers: {

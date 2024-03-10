@@ -1,13 +1,13 @@
 'use client'
 
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { useSocket } from '@/api/use-socket';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import { ISocketAnswer, ISocketCandidate, ISocketLeave, ISocketOffer, ISocketResponse } from '@/models/ISocket';
-import { useSocket } from '@/api/use-socket';
-import cl from './videoCall.module.scss';
-import { CallSvg, MicroOffSvg, MicroOnSvg, VideoOffSvg, VideoOnSvg } from '../svgs';
-import { getInitials } from '@/utils/getInitials';
 import { popupSlice } from '@/store/reducers/PopupSlice';
+import { getInitials } from '@/utils/getInitials';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { CallSvg, MicroOffSvg, MicroOnSvg, VideoOffSvg, VideoOnSvg } from '../svgs';
+import cl from './videoCall.module.scss';
 
 interface IVideoCallProps {
   offer?: RTCSessionDescription;

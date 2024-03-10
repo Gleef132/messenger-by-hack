@@ -1,8 +1,8 @@
-import type { Metadata } from 'next'
-import { FontsVariables } from './fonts'
-import '@/styles/globals.scss'
 import { StoreProvider } from '@/store/StoreProvider'
+import '@/styles/globals.scss'
+import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
+import { FontsVariables } from './fonts'
 
 export const metadata: Metadata = {
   title: 'Messenger | by Hack',

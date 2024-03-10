@@ -1,8 +1,8 @@
 'use client'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { popupSlice } from '@/store/reducers/PopupSlice'
 import { FC, PropsWithChildren } from 'react'
 import cl from './popup.module.scss'
-import { popupSlice } from '@/store/reducers/PopupSlice'
-import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 
 const Popup: FC<PropsWithChildren> = () => {
 

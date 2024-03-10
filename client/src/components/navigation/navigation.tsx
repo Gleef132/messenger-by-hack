@@ -1,10 +1,10 @@
 'use client'
 
-import { FC } from 'react'
-import { LanguageSvg, MessageSvg, CameraSvg, MusicSvg, CalendarSvg } from '../svgs'
-import cl from './navigation.module.scss'
-import { settingSlice } from '@/store/reducers/SettingSlice'
 import { useAppDispatch } from '@/hooks/redux'
+import { settingSlice } from '@/store/reducers/SettingSlice'
+import { FC } from 'react'
+import { CalendarSvg, CameraSvg, LanguageSvg, MessageSvg, MusicSvg } from '../svgs'
+import cl from './navigation.module.scss'
 
 const Navigation: FC = () => {
 

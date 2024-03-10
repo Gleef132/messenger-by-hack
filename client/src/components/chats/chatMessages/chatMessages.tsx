@@ -1,13 +1,13 @@
 'use client'
-import { FC, useEffect, useRef } from 'react'
-import cl from './chatMessages.module.scss'
+
 import { IMessage } from '@/models/IMessage';
+import { FC, useEffect, useRef } from 'react';
 import ChatMessage from '../chatMessage/chatMessage';
+import cl from './chatMessages.module.scss';
 
 interface IChatMessagesProps {
   messages: IMessage[];
   footerHeight: number;
-  // footerTextArea: React.RefObject<HTMLTextAreaElement>;
   scrollHandle: (condition: boolean) => void;
 }
 

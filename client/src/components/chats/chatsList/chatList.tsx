@@ -1,12 +1,13 @@
 'use client'
-import { FC, useEffect, useRef, useState } from 'react'
-import ChatLink from '../chatLink/chatLink'
-import { IUser } from '@/models/IUser'
+
+import { useSocket } from '@/api/use-socket'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { ISocketOnline } from '@/models/ISocket'
-import { searchSlice } from '@/store/reducers/SearchSlice'
-import { useSocket } from '@/api/use-socket'
+import { IUser } from '@/models/IUser'
 import { chatUsersSlice } from '@/store/reducers/ChatUsersSlice'
+import { searchSlice } from '@/store/reducers/SearchSlice'
+import { FC, useEffect, useRef, useState } from 'react'
+import ChatLink from '../chatLink/chatLink'
 import cl from './chatList.module.scss'
 
 interface IChatListProps {

@@ -1,19 +1,17 @@
 'use client'
 
 import { FC, ReactNode, useState } from 'react'
-import cl from './imageMessage.module.scss'
-import { IChatMessageProps, } from '@/models/IMessage'
-import MessagePrototype from '../messagePrototype/messagePrototype'
 import { useAppDispatch } from '@/hooks/redux'
+import { IChatMessageProps, } from '@/models/IMessage'
 import { popupSlice } from '@/store/reducers/PopupSlice'
 import Image from 'next/image'
+import MessagePrototype from '../messagePrototype/messagePrototype'
+import cl from './imageMessage.module.scss'
 
 const ImageMessage: FC<IChatMessageProps> = ({ ...props }) => {
 
   const { message, files } = { ...props }
   const [isLoadingImages, setIsLoadingImages] = useState<boolean[]>(files?.map(file => true) || [])
-  // const images: string[] = message.split(' ')
-  // const images = ['http://localhost:5000/static/45a157d8-0ba8-4231-aeea-b084fe062ed1.jpg']
   const { showPopup } = popupSlice.actions
   const dispatch = useAppDispatch()
 
@@ -44,7 +42,6 @@ const ImageMessage: FC<IChatMessageProps> = ({ ...props }) => {
           {files?.map((image, index) => {
             const imageBgStyle = imageBackgroundStyles(image.name)
             return <div className={`${cl.image__img} ${imageBgStyle}`} key={image._id} style={{ gridColumn: files?.length === 2 ? 'span 2' : '' }} onClick={() => imageShow(image._id)}>
-              {/* <img src={image._id} alt="image" /> */}
               {isLoadingImages[index] && <div className={cl.image__loader} />}
               <Image src={image._id} alt='image' fill unoptimized onLoad={() => setIsLoadingImages(prev => prev.map((state, i) => i === index ? false : state))} />
             </div>

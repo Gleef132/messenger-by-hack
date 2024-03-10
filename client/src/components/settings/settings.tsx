@@ -1,17 +1,17 @@
 'use client'
 
-import { FC, useState } from 'react'
-import cl from './settings.module.scss'
-import { ArrowSvg, LanguageSettingSvg, PencilSvg, ThemeSvg } from '../svgs';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
-import { getCookie } from '@/utils/getCookie';
-import { languageSlice } from '@/store/reducers/LanguageSlice';
-import { getLanguage } from '@/utils/getLanguage';
-import Avatar from '../ui/avatar/avatar';
-import { setCookie } from '@/utils/setCookie';
-import { themeSlice } from '@/store/reducers/ThemeSlice';
 import { ThemeType } from '@/models/ThemeType';
+import { languageSlice } from '@/store/reducers/LanguageSlice';
+import { themeSlice } from '@/store/reducers/ThemeSlice';
+import { getCookie } from '@/utils/getCookie';
+import { getLanguage } from '@/utils/getLanguage';
+import { setCookie } from '@/utils/setCookie';
+import { FC, useState } from 'react';
+import { ArrowSvg, LanguageSettingSvg, PencilSvg, ThemeSvg } from '../svgs';
+import Avatar from '../ui/avatar/avatar';
 import ChangeProfile from './changeProfile/changeProfile';
+import cl from './settings.module.scss';
 
 interface ISettingsProps {
   closeSettings: () => void;

@@ -1,21 +1,21 @@
 'use client'
 
-import { FC, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
+import { FC, useEffect, useState } from 'react'
 
 import Loader from '@/components/ui/loader/loader'
+import { getChatUsers } from '@/app/actions'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { IResponse } from '@/models/IResponse'
-import { getCookie } from '@/utils/getCookie'
-import cl from './auth.module.scss'
 import { useRedirect } from '@/hooks/useRedirect'
 import { ILanguageData } from '@/models/ILanguage'
-import { createAvatarGradient } from '@/utils/createAvatarGradient'
-import { userSlice } from '@/store/reducers/UserSlice'
+import { IResponse } from '@/models/IResponse'
 import { IUser } from '@/models/IUser'
 import { chatUsersSlice } from '@/store/reducers/ChatUsersSlice'
-import { getChatUsers } from '@/app/actions'
+import { userSlice } from '@/store/reducers/UserSlice'
+import { createAvatarGradient } from '@/utils/createAvatarGradient'
+import { getCookie } from '@/utils/getCookie'
+import cl from './auth.module.scss'
 interface IAuth {
   language: ILanguageData;
 }

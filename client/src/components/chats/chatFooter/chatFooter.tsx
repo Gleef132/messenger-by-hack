@@ -1,17 +1,19 @@
-import { FC, useEffect, useRef, useState } from 'react'
-import cl from './chatFooter.module.scss'
+'use client'
+
+import { FC, useEffect, useRef, useState } from 'react';
+import { useSocket } from '@/api/use-socket';
 import { ClipSvg, FileSvg, ImageSvg, MicroOnSvg, SendSvg, TrashSvg } from '@/components/svgs';
 import Timer from '@/components/timer/timer';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
-import axios from 'axios';
-import { createMessages } from '@/utils/createMessages';
-import { useSocket } from '@/api/use-socket';
+import { useAutoResizeTextArea } from '@/hooks/useAutoResizeTextArea';
 import { IMessage } from '@/models/IMessage';
+import { ISocketTyping } from '@/models/ISocket';
 import { chatUsersSlice } from '@/store/reducers/ChatUsersSlice';
 import { popupSlice } from '@/store/reducers/PopupSlice';
+import { createMessages } from '@/utils/createMessages';
+import axios from 'axios';
 import ChatPopupContent from '../chatPopupContent/chatPopupContent';
-import { ISocketTyping } from '@/models/ISocket';
-import { useAutoResizeTextArea } from '@/hooks/useAutoResizeTextArea';
+import cl from './chatFooter.module.scss';
 
 type SendMessage = {
   event: 'key'
@@ -23,7 +25,6 @@ type SendMessage = {
 
 interface IChatFooterProps {
   footerLineRef: React.RefObject<HTMLDivElement>;
-  // textAreaRef: React.RefObject<HTMLTextAreaElement>;
   messagesState: IMessage[];
   setMessagesState: React.Dispatch<React.SetStateAction<IMessage[]>>;
   setTextAreaHeight: (height: number) => void;

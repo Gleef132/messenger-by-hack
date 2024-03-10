@@ -1,13 +1,13 @@
 'use client'
 
+import { ProfileCameraSvg } from '@/components/svgs'
+import Avatar from '@/components/ui/avatar/avatar'
+import Loader from '@/components/ui/loader/loader'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { userSlice } from '@/store/reducers/UserSlice'
+import axios from 'axios'
 import { FC, useState } from 'react'
 import cl from './changeProfile.module.scss'
-import Avatar from '@/components/ui/avatar/avatar'
-import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { ProfileCameraSvg } from '@/components/svgs'
-import axios from 'axios'
-import { userSlice } from '@/store/reducers/UserSlice'
-import Loader from '@/components/ui/loader/loader'
 
 interface IUserNames<T> {
   firstName: T;
@@ -39,13 +39,6 @@ const ChangeProfile: FC = () => {
   const { changeUserData } = userSlice.actions
 
   const changeProfile = async (e: React.FormEvent<HTMLButtonElement>) => {
-    // if (!file && usernames.firstName === firstName && usernames.secondaryName === secondaryName) return setError(undefined);
-    // if (!usernames.firstName) return setError('firstName');
-    // if (!usernames.secondaryName) return setError('secondaryName');
-    // if (usernames.firstName.split(' ').length > 1) return setError('firstName');
-    // if (usernames.secondaryName.split(' ').length > 1) return setError('secondaryName');
-    // return console.log('clown')
-    // setError(undefined)
     e.preventDefault()
     setIsLoading(true)
     const formData = new FormData()

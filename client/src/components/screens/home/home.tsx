@@ -1,26 +1,27 @@
 'use client'
 
+import Aside from '@/components/aside/aside'
+import ChatContent from '@/components/chats/chatContent/chatContent'
+import ChatList from '@/components/chats/chatsList/chatList'
+import SearchList from '@/components/search/searchList/searchList'
+import UserInfo from '@/components/userInfo/userInfo'
+
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { useRedirect } from '@/hooks/useRedirect'
+import { ILanguageData } from '@/models/ILanguage'
+import { ISocketConnection } from '@/models/ISocket'
+import { IUser } from '@/models/IUser'
+import { languageSlice } from '@/store/reducers/LanguageSlice'
+import { settingSlice } from '@/store/reducers/SettingSlice'
+import { socketSlice } from '@/store/reducers/SocketSlice'
+import { waitForConnection } from '@/utils/waitForConnection'
+
+import dynamic from 'next/dynamic'
 import { FC, useEffect, useRef } from 'react'
 import Search from '../../search/search'
-import ChatList from '@/components/chats/chatsList/chatList'
-import ChatContent from '@/components/chats/chatContent/chatContent'
+
 import cl from './home.module.scss'
-import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { socketSlice } from '@/store/reducers/SocketSlice'
-import { ISocketConnection, ISocketOnline } from '@/models/ISocket'
-import { waitForConnection } from '@/utils/waitForConnection'
-import SearchList from '@/components/search/searchList/searchList'
-import Aside from '@/components/aside/aside'
-import { settingSlice } from '@/store/reducers/SettingSlice'
-// import Settings from '@/components/settings/settings'
-import UserInfo from '@/components/userInfo/userInfo'
-import { useRedirect } from '@/hooks/useRedirect'
-import { languageSlice } from '@/store/reducers/LanguageSlice'
-import { ILanguageData } from '@/models/ILanguage'
-import dynamic from 'next/dynamic'
-import { IUser } from '@/models/IUser'
-import { chatUsersSlice } from '@/store/reducers/ChatUsersSlice'
-import { userSlice } from '@/store/reducers/UserSlice'
+
 interface IHomePage {
   language: ILanguageData;
   user: IUser;
